@@ -10,6 +10,6 @@ export const paths = {
     login: "/login",
   },
   dashboard: {
-    root: "/quiz-dashboard",
+    root: "/quiz-management",
   },
 };
