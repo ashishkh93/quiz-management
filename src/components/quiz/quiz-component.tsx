@@ -15,7 +15,7 @@ const QuizComponent = () => {
         <div className="flex justify-around items-start sm:items-center gap-2 flex-col sm:flex-row">
           <InputField
             name="search"
-            className="rounded-md h-10"
+            className="rounded-md h-10 focus:!ring-0"
             icon={Search}
             iconClassName="!w-4 !h-4"
             placeholder="Search"
