@@ -18,7 +18,7 @@ export const GuestGuard = ({ children }: IChildren) => {
 
   const [isChecking, setIsChecking] = useState(true);
 
-  const returnTo = searchParams.get("returnTo") || paths.dashboard.root;
+  const returnTo = searchParams.get("returnTo") || paths.quiz_management.root;
 
   const checkPermissions = async () => {
     if (loading) {

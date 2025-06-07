@@ -22,7 +22,7 @@ const QuizLayout = ({ children }: IChildren) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const navigation = [
-    { name: "Quiz Management", href: paths.dashboard.root, icon: LayoutDashboard },
+    { name: "Quiz Management", href: paths.quiz_management.root, icon: LayoutDashboard },
     // { name: "Add New", href: "/dashboard/new", icon: Plus },
   ];
 

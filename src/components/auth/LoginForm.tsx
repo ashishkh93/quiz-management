@@ -41,7 +41,7 @@ const LoginForm = () => {
     }
 
     if (loginRes.status) {
-      router.push(paths.dashboard.root);
+      router.push(paths.quiz_management.root);
     } else {
       toast.error(loginRes?.message);
     }
@@ -64,6 +64,7 @@ const LoginForm = () => {
               id="email"
               name="email"
               register={register}
+              className="!rounded-2xl h-14"
               placeholder="Enter your email address"
               icon={MailIcon}
               error={errors?.email?.message}
@@ -77,6 +78,7 @@ const LoginForm = () => {
               id="password"
               name="password"
               register={register}
+              className="!rounded-2xl h-14"
               placeholder="Enter your password"
               type={showPassword ? "text" : "password"}
               icon={LockIcon}

@@ -1,11 +1,17 @@
+"use client";
+
 import React, { Fragment } from "react";
 import { Search } from "lucide-react";
 import QuizDetailCard from "./quiz-detail-card";
 import Typography from "../ui/typegraphy";
 import InputField from "../shared/input/InputField";
 import GradientButton from "../molecules/gradient-button/gradient-button";
+import { useRouter } from "next/navigation";
+import { paths } from "@/routes/path";
 
 const QuizComponent = () => {
+  const router = useRouter();
+
   return (
     <div className="flex flex-col flex-[0_0_auto] space-y-4 my-4">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-2 md:gap-0">
@@ -24,6 +30,7 @@ const QuizComponent = () => {
           <GradientButton
             fromGradient="from-[#0E76BC]"
             toGradient="to-[#283891]"
+            onClick={() => router.push(paths.quiz_management.create)}
           >
             Create Quiz
           </GradientButton>

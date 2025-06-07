@@ -9,7 +9,8 @@ export const paths = {
   auth: {
     login: "/login",
   },
-  dashboard: {
+  quiz_management: {
     root: "/quiz-management",
+    create: "/quiz-management/create",
   },
 };

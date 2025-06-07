@@ -27,7 +27,9 @@ const InputField: React.FC<CustomInputFieldProps> = ({
           type={type}
           placeholder={placeholder}
           {...register?.(id)}
-          className={`h-14 pl-12 pr-12 !w-full rounded-2xl border ${
+          className={`${
+            Icon ? "pl-12 pr-12" : "pl-4 pr-4"
+          } h-10 !w-full rounded-md border focus:!ring-0 ${
             error ? "border-red-500" : "border-[#adadad]"
           } ${className}`}
           {...props}
