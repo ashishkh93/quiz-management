@@ -11,10 +11,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema } from "@/utils/schema/login.schema";
 import InputField from "../shared/input/InputField";
 import { adminLoginService } from "@/api-service/auth.service";
+import { setAuthCookie } from "@/app/actions/set-auth-cookie";
+import { useAuthContext } from "@/auth/hooks/use-auth-context";
+import { toast } from "sonner";
 
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const router = useRouter();
+
+  const { checkUserSession } = useAuthContext();
+
   const {
     register,
     handleSubmit,
@@ -26,21 +32,22 @@ const LoginForm = () => {
 
   const onSubmit = async (data: LoginFormData) => {
     console.log(data, "data==");
-    router.push("/quiz-dashboard");
+    // router.push("/quiz-dashboard");
 
-    // const loginRes = (await adminLoginService(data)) as IDefaultResponse;
+    const loginRes = (await adminLoginService(data)) as IDefaultResponse;
 
-    // if (loginRes.status) {
-    //   router.push("/quiz-dashboard");
-    // }
+    if ((loginRes?.data as ObjType)?.token) {
+      await setAuthCookie({
+        token: (loginRes?.data as ObjType)?.token as string,
+      }); // Cookie is now securely stored
+      await checkUserSession();
+    }
 
-    // try {
-    // //   const response = await axios.post("/api/login", data); // Replace with your backend URL
-    //   console.log("Login successful:", response.data);
-    //   // Redirect or save token, etc.
-    // } catch (err: any) {
-    //   console.error("Login failed:", err.response?.data || err.message);
-    // }
+    if (loginRes.status) {
+      router.push("/quiz-dashboard");
+    } else {
+      toast.error(loginRes?.message);
+    }
   };
 
   return (

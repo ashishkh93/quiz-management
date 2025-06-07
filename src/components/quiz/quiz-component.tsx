@@ -1,9 +1,8 @@
 import React, { Fragment } from "react";
-import { Search, Share2 } from "lucide-react";
+import { Search } from "lucide-react";
 import QuizDetailCard from "./quiz-detail-card";
 import Typography from "../ui/typegraphy";
 import InputField from "../shared/input/InputField";
-import { Button } from "../ui/button";
 import GradientButton from "../molecules/gradient-button/gradient-button";
 
 const QuizComponent = () => {

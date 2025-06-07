@@ -17,17 +17,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const checkUserSession = useCallback(async () => {
     try {
-      setState({
-        user: { name: "Ashish", accessToken: "asasdaawfdin" },
-        loading: false,
-      });
-      return;
-
-      const statusRes = await apiClient("/api/auth/status/");
+      const statusRes = await apiClient("/api/auth/status");
       const user = statusRes?.user;
       if (statusRes.isAuthenticated) {
         setState({ user: { ...user }, loading: false });
-        axiosInstance.defaults.headers.common.Authorization = `Bearer ${user.accessToken}`;
+        axiosInstance.defaults.headers.common.Authorization = `Bearer ${user?.token}`;
       } else {
         setState({ user: null, loading: false });
       }

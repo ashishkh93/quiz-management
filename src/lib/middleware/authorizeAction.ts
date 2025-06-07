@@ -18,7 +18,7 @@ export const authorizeAction = (handler: HandlerFn) => {
       );
     }
 
-    let decoded = verifyJwt(authObj.accessToken) as CustomJwtPayload;
+    let decoded = verifyJwt(authObj.token ?? "") as CustomJwtPayload;
 
     if (decoded?.error) {
       return NextResponse.json(

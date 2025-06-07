@@ -33,7 +33,7 @@ declare global {
   };
 
   type AuthCookie = {
-    accessToken: string;
+    token?: string;
     refreshToken?: string;
     [key: string]: any;
   };
