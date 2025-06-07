@@ -1,8 +1,9 @@
 import React from "react";
 import Login from "@/screens/Login";
+import { CONFIG } from "@/global-config";
 
-const LoginPage = () => {
+export const metadata = { title: `Sign in | ${CONFIG.appName}` };
+
+export default function Page() {
   return <Login />;
-};
-
-export default LoginPage;
+}

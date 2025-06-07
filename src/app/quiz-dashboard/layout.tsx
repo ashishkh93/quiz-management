@@ -1,8 +1,18 @@
+import { AuthGuard } from "@/auth/context/guard/auth-guard";
 import QuizLayout from "@/components/layout/quiz-layout";
+import { CONFIG } from "@/global-config";
 import React from "react";
 
-const Layout = ({ children }: IChildren) => {
-  return <QuizLayout>{children}</QuizLayout>;
-};
+export default function Layout({ children }: IChildren) {
+  const skipAuth = CONFIG.skip_auth;
 
-export default Layout;
+  if (skipAuth) {
+    return <QuizLayout>{children}</QuizLayout>;
+  }
+
+  return (
+    <AuthGuard>
+      <QuizLayout>{children}</QuizLayout>
+    </AuthGuard>
+  );
+}

@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { toast } from "sonner";
 import { EyeIcon, EyeOffIcon, LockIcon, MailIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -13,7 +13,7 @@ import InputField from "../shared/input/InputField";
 import { adminLoginService } from "@/api-service/auth.service";
 import { setAuthCookie } from "@/app/actions/set-auth-cookie";
 import { useAuthContext } from "@/auth/hooks/use-auth-context";
-import { toast } from "sonner";
+import { paths } from "@/routes/path";
 
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -31,9 +31,6 @@ const LoginForm = () => {
   });
 
   const onSubmit = async (data: LoginFormData) => {
-    console.log(data, "data==");
-    // router.push("/quiz-dashboard");
-
     const loginRes = (await adminLoginService(data)) as IDefaultResponse;
 
     if ((loginRes?.data as ObjType)?.token) {
@@ -44,7 +41,7 @@ const LoginForm = () => {
     }
 
     if (loginRes.status) {
-      router.push("/quiz-dashboard");
+      router.push(paths.dashboard.root);
     } else {
       toast.error(loginRes?.message);
     }

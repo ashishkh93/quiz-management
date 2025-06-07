@@ -18,8 +18,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const checkUserSession = useCallback(async () => {
     try {
       const statusRes = await apiClient("/api/auth/status");
-      const user = statusRes?.user;
       if (statusRes.isAuthenticated) {
+        const user = statusRes?.user;
         setState({ user: { ...user }, loading: false });
         axiosInstance.defaults.headers.common.Authorization = `Bearer ${user?.token}`;
       } else {

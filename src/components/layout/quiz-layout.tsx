@@ -9,6 +9,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Inter } from "next/font/google";
+import { paths } from "@/routes/path";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,7 +22,7 @@ const QuizLayout = ({ children }: IChildren) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const navigation = [
-    { name: "Quiz Management", href: "/quiz-dashboard", icon: LayoutDashboard },
+    { name: "Quiz Management", href: paths.dashboard.root, icon: LayoutDashboard },
     // { name: "Add New", href: "/dashboard/new", icon: Plus },
   ];
 

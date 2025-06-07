@@ -13,14 +13,13 @@ export async function GET() {
 
   try {
     const authObj = JSON.parse(authCookie.value);
-    console.log(authObj, 'authObj==');
-    
+
     let decoded = verifyJwt(authObj.token ?? "") as CustomJwtPayload;
 
     if (decoded.error) {
       return NextResponse.json(
         {
-          isAuthenticated: true,
+          isAuthenticated: false,
           message: decoded.error || "Invalid or expired token",
         },
         { status: 401 }
