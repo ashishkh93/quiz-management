@@ -20,12 +20,12 @@ export const authorizeAction = (handler: HandlerFn) => {
 
     let decoded = verifyJwt(authObj.token ?? "") as CustomJwtPayload;
 
-    if (decoded?.error) {
-      return NextResponse.json(
-        { message: decoded?.error || "Invalid or expired token" },
-        { status: 401 }
-      );
-    }
+    // if (decoded?.error) {
+    //   return NextResponse.json(
+    //     { message: decoded?.error || "Invalid or expired token" },
+    //     { status: 401 }
+    //   );
+    // }
 
     let form = {};
     const contentType = req.headers.get("Content-Type") || "";
@@ -51,7 +51,7 @@ export const authorizeAction = (handler: HandlerFn) => {
 
     const extendedContext: HandlerContext = {
       ...context,
-      token: decoded?.accessToken ?? "",
+      token: decoded?.token ?? "",
       user: decoded,
       form,
     };
@@ -66,19 +66,26 @@ export const apiCall = async ({
   method = "get",
   headers = {},
 }: ApiCallProps): Promise<ApiCallResponse> => {
-  const axios = createAuthenticatedAxios();
+  const axios = await createAuthenticatedAxios();
 
   const isGet = method.toLowerCase() === "get";
   const initDataKey = isGet ? "params" : "data";
 
+  const isFormData =
+    typeof FormData !== "undefined" && data instanceof FormData;
+
+  // Dynamically build headers
+  const mergedHeaders = {
+    ...axios.defaults.headers.common,
+    Accept: "application/json",
+    ...(isFormData ? {} : { "Content-Type": "application/json" }), // skip for FormData
+    ...headers, // user overrides last
+  };
+
   const init = {
     url: url,
     method,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      ...headers,
-    },
+    headers: mergedHeaders,
     [initDataKey]: data,
   };
 

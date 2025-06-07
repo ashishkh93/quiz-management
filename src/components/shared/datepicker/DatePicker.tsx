@@ -50,8 +50,8 @@ const DatePicker: React.FC<CustomDatePickerProps> = ({
         <PopoverTrigger asChild>
           <Button
             variant="outline"
-            className={`h-10 w-full justify-between text-left rounded-md ${
-              error ? "border-red-500" : "border-[#adadad]"
+            className={`h-10 w-full justify-between text-left rounded-md font-normal ${
+              error ? "border-red-500" : "border-gray-200"
             } ${className}`}
           >
             {value ? moment(value).format("DD MMM YYYY") : placeholder}

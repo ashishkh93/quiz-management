@@ -30,7 +30,7 @@ const InputField: React.FC<CustomInputFieldProps> = ({
           className={`${
             Icon ? "pl-12 pr-12" : "pl-4 pr-4"
           } h-10 !w-full rounded-md border focus:!ring-0 ${
-            error ? "border-red-500" : "border-[#adadad]"
+            error ? "border-red-500" : "border-gray-200"
           } ${className}`}
           {...props}
         />

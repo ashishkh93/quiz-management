@@ -1,9 +1,9 @@
-import axios from 'axios';
-import { cookies } from 'next/headers';
-import { STORAGE_KEY } from 'src/auth/context/jwt';
+import axios from "axios";
+import { cookies } from "next/headers";
+import { STORAGE_KEY } from "src/auth/context/jwt";
 
-export function createAuthenticatedAxios() {
-  const cookieStore = cookies();
+export async function createAuthenticatedAxios() {
+  const cookieStore = await cookies();
   const authCookie = cookieStore.get(STORAGE_KEY);
 
   const instance = axios.create({
@@ -13,18 +13,19 @@ export function createAuthenticatedAxios() {
   if (authCookie) {
     try {
       const authObj = JSON.parse(authCookie.value);
-      if (authObj?.accessToken) {
-        instance.defaults.headers.common.Authorization = `Bearer ${authObj.accessToken}`;
+
+      if (authObj?.token) {
+        instance.defaults.headers.common.Authorization = `Bearer ${authObj.token}`;
       }
     } catch (err) {
-      console.error('Failed to parse auth cookie:', err);
+      console.error("Failed to parse auth cookie:", err);
     }
   }
 
   instance.interceptors.response.use(
     (res) => res,
     (err) => {
-      const errorData = err?.response?.data || { message: 'Server Error' };
+      const errorData = err?.response?.data || { message: "Server Error" };
       return Promise.reject(errorData);
     }
   );

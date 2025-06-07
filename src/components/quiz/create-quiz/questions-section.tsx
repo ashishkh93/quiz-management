@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { QuizFormValues } from "@/lib/schema";
 import { QuestionCard } from "./question-card";
@@ -35,27 +34,22 @@ export function QuestionsSection({ form }: QuestionsSectionProps) {
     <div>
       <h3 className="font-medium text-gray-700 mb-6">Questions</h3>
 
-      {watch()?.questions?.map((_, index) => (
-        <div key={index} className="relative">
-          <QuestionCard index={index} form={form} onRemove={removeQuestion} />
-          <button
-            type="button"
-            onClick={() => removeQuestion(index)}
-            className="absolute top-4 right-4 text-gray-500 hover:text-destructive transition-colors"
-          >
-            <Minus className="h-4 w-4" />
-          </button>
-        </div>
-      ))}
+      <div className="space-y-3">
+        {watch()?.questions?.map((_, index) => (
+          <div key={index} className="relative">
+            <QuestionCard index={index} form={form} onRemove={removeQuestion} />
+          </div>
+        ))}
 
-      <button
-        type="button"
-        onClick={addQuestion}
-        className="w-full py-3 border-2 border-dashed border-gray-300 rounded-md flex items-center justify-center gap-2 text-gray-600 hover:bg-gray-50 transition-colors"
-      >
-        <Plus className="h-4 w-4" />
-        <span>Add Question</span>
-      </button>
+        <button
+          type="button"
+          onClick={addQuestion}
+          className="w-full py-3 border-2 border-dashed border-gray-300 rounded-md flex items-center justify-center gap-2 text-gray-600 transition-colors cursor-pointer hover:bg-gray-100"
+        >
+          <Plus className="h-4 w-4" />
+          <span>Add Question</span>
+        </button>
+      </div>
     </div>
   );
 }

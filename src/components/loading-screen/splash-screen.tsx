@@ -2,6 +2,7 @@
 
 import { Loader } from "lucide-react";
 import { cn } from "@/lib/utils";
+import CustomLoader from "../loader/loader";
 
 type LoadingSpinnerProps = {
   size?: number;
@@ -11,19 +12,14 @@ type LoadingSpinnerProps = {
 };
 
 export const SplashScreen = ({
-  size = 30,
+  size,
   className,
   text,
-  color = "black",
+  color,
 }: LoadingSpinnerProps) => {
   return (
     <div className="flex flex-col items-center justify-center gap-2 p-4 min-h-screen">
-      <Loader
-        className={cn("animate-spin text-muted-foreground", className)}
-        size={size}
-        strokeWidth={2.5}
-        color={color}
-      />
+      <CustomLoader size={size} className={className} color={color} />
       {text && <p className="text-sm text-muted-foreground">{text}</p>}
     </div>
   );

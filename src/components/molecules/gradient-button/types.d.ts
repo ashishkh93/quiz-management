@@ -7,5 +7,7 @@ declare global {
     className?: string;
     fromGradient?: string;
     toGradient?: string;
+    disabled?: boolean
+    loading?: boolean
   }
 }

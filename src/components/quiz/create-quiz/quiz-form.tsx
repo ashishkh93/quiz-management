@@ -7,6 +7,9 @@ import { QuizDetails } from "./quiz-details";
 import { QuestionsSection } from "./questions-section";
 import { toast } from "sonner";
 import { quizSchema } from "@/utils/schema/quiz.schema";
+import GradientButton from "@/components/molecules/gradient-button/gradient-button";
+import { createNewQuiz } from "@/api-service/quiz.service";
+import axios from "axios";
 
 const QuizForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -41,15 +44,17 @@ const QuizForm = () => {
   const onSubmit: SubmitHandler<QuizFormValues> = async (data) => {
     try {
       setIsSubmitting(true);
-      // Here you would typically send the data to your API
+
       console.log("Form submitted:", data);
 
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const quizRes = (await createNewQuiz(data)) as IDefaultResponse;
 
-      toast.success("Quiz created successfully!");
-      // Optionally reset the form or redirect
-      // form.reset();
+      if (!quizRes.status) {
+        toast.error(quizRes?.message ?? "Quiz created successfully!");
+      } else {
+        toast.success(quizRes?.message ?? "Quiz created successfully!");
+        form.reset();
+      }
     } catch (error) {
       console.error(error);
       toast.error("Failed to create quiz. Please try again.");
@@ -70,13 +75,15 @@ const QuizForm = () => {
       </div>
 
       <div className="mt-8">
-        <button
+        <GradientButton
+          fromGradient="from-[#0E76BC]"
+          toGradient="to-[#283891] w-36"
           type="submit"
           disabled={isSubmitting}
-          className="px-6 py-3 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors disabled:opacity-70 disabled:cursor-not-allowed w-40"
+          loading={isSubmitting}
         >
           {isSubmitting ? "Creating..." : "Next"}
-        </button>
+        </GradientButton>
       </div>
     </form>
   );

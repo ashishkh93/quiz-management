@@ -17,13 +17,14 @@ axiosInstance.interceptors.response.use(
 export default axiosInstance;
 
 export const endpoints = {
-  chat: "/api/chat",
-  kanban: "/api/kanban",
-  calendar: "/api/calendar",
   auth: {
     login: ADMIN_BASE_PATH + "/login",
 
     // next_order_list: (id) => `/api/customers/${id}/orders/`,
     // order_list: (id) => `/orders/customer/${id}`,
+  },
+  quiz: {
+    next_create: "/api/quiz/create",
+    create: ADMIN_BASE_PATH + "/quiz/create",
   },
 };

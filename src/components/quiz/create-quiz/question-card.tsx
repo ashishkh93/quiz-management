@@ -2,9 +2,11 @@
 
 import { useState } from "react";
 import { UseFormReturn } from "react-hook-form";
-import { Trash, Plus, Info } from "lucide-react";
-import { QuizFormValues } from "@/lib/schema";
+import { Trash, Plus, Info, Minus, Trash2, HelpCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import InputField from "@/components/shared/input/InputField";
+import { Checkbox } from "@/components/ui/checkbox";
 
 interface QuestionCardProps {
   index: number;
@@ -13,7 +15,12 @@ interface QuestionCardProps {
 }
 
 export function QuestionCard({ index, form, onRemove }: QuestionCardProps) {
-  const { register, formState: { errors }, setValue, watch } = form;
+  const {
+    register,
+    formState: { errors },
+    setValue,
+    watch,
+  } = form;
   const correctAnswer = watch(`questions.${index}.correctAnswer`);
   const options = watch(`questions.${index}.options`) || ["", "", "", ""];
 
@@ -27,7 +34,7 @@ export function QuestionCard({ index, form, onRemove }: QuestionCardProps) {
     const currentOptions = [...options];
     currentOptions.splice(optionIndex, 1);
     setValue(`questions.${index}.options`, currentOptions);
-    
+
     // Update correctAnswer if needed
     if (correctAnswer === optionIndex) {
       setValue(`questions.${index}.correctAnswer`, 0);
@@ -41,10 +48,10 @@ export function QuestionCard({ index, form, onRemove }: QuestionCardProps) {
   };
 
   return (
-    <div className="mb-8 bg-white rounded-lg border border-gray-200 p-6 transition-all">
+    <div className="bg-gray-50 border rounded-md p-4 space-y-4">
       <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-2">
-          <h3 className="font-medium text-gray-700">Question {index + 1}</h3>
+        <div className="flex flex-col items-start">
+          <div className="font-medium">Question {index + 1}</div>
           {errors.questions?.[index] && (
             <div className="text-xs text-destructive flex items-center gap-1">
               <Info className="h-3 w-3" />
@@ -52,67 +59,71 @@ export function QuestionCard({ index, form, onRemove }: QuestionCardProps) {
             </div>
           )}
         </div>
-        <button 
-          type="button"
-          onClick={() => onRemove(index)}
-          className="text-gray-500 hover:text-destructive transition-colors"
-          aria-label="Remove question"
-        >
-          <Trash className="h-4 w-4" />
-        </button>
-      </div>
-
-      <div className="mb-4">
-        <div className="flex items-center gap-2 mb-1">
-          <Info className="h-4 w-4 text-gray-400" />
-          <input
-            {...register(`questions.${index}.question`)}
-            placeholder="Enter your question here"
-            className={cn(
-              "w-full px-3 py-2 border border-gray-200 rounded-md focus:ring-1 focus:ring-primary focus:border-primary",
-              errors.questions?.[index]?.question && "border-destructive focus:ring-destructive"
-            )}
-          />
-        </div>
-        {errors.questions?.[index]?.question && (
-          <p className="text-xs text-destructive mt-1 ml-6">
-            {errors.questions?.[index]?.question?.message}
-          </p>
+        {index !== 0 && (
+          <Button
+            type="button"
+            onClick={() => onRemove(index)}
+            className="p-1 text-red-500 hover:!bg-red-100 rounded-md !bg-white cursor-pointer"
+          >
+            <Minus className="w-4 h-4" />
+          </Button>
         )}
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
-        {options.map((_, optionIndex) => (
+      <div className="flex items-center gap-2 my-4">
+        <HelpCircle className="text-gray-500 w-5 h-5" />
+        <InputField
+          id={`questions.${index}.question`}
+          name={`questions.${index}.question`}
+          register={register}
+          placeholder="Enter quiz name"
+          error={errors.questions?.[index]?.question?.message}
+        />
+      </div>
+
+      <div className="grid grid-cols-2 gap-3">
+        {options.map((_: any, optionIndex: number) => (
           <div key={optionIndex} className="mb-3">
             <div className="flex justify-between mb-1">
-              <label className="text-sm text-gray-600">Option {optionIndex + 1}</label>
+              <label className="text-sm text-gray-600">
+                Option {optionIndex + 1}
+              </label>
             </div>
-            <div className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                checked={correctAnswer === optionIndex}
-                onChange={() => handleSetCorrectAnswer(optionIndex)}
-                className="h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary"
-              />
-              <input
-                {...register(`questions.${index}.options.${optionIndex}`)}
-                placeholder={`Option ${optionIndex + 1}`}
-                className={cn(
-                  "flex-1 px-3 py-2 border border-gray-200 rounded-md focus:ring-1 focus:ring-primary focus:border-primary",
-                  errors.questions?.[index]?.options?.[optionIndex] && "border-destructive focus:ring-destructive"
-                )}
-              />
-              <button
+            <div className="flex items-center gap-2 w-full">
+              <div className="flex items-center gap-2 w-full border rounded-md p-2">
+                <Checkbox
+                  checked={correctAnswer === optionIndex}
+                  onCheckedChange={() => handleSetCorrectAnswer(optionIndex)}
+                  className="w-4 h-4 !border-gray-400"
+                />
+                <InputField
+                  id={`questions.${index}.options.${optionIndex}`}
+                  name={`questions.${index}.options.${optionIndex}`}
+                  register={register}
+                  placeholder={`Option ${optionIndex + 1}`}
+                  // error={errors.questions?.[index]?.options?.[optionIndex]?.message}
+                  className="h-8 !border-0 !pl-0 !shadow-none"
+                />
+              </div>
+              <Button
                 type="button"
-                onClick={() => handleRemoveOption(optionIndex)}
-                className="text-gray-500 hover:text-destructive transition-colors"
-                aria-label="Remove option"
+                className="p-6 border rounded-md bg-gray-100 hover:bg-gray-200"
               >
-                <Trash className="h-4 w-4" />
-              </button>
+                {optionIndex === 3 ? (
+                  <Plus
+                    className="w-4 h-4 text-black"
+                    onClick={handleAddOption}
+                  />
+                ) : (
+                  <Trash2
+                    className="w-4 h-4 text-black"
+                    onClick={() => handleRemoveOption(optionIndex)}
+                  />
+                )}
+              </Button>
             </div>
             {errors.questions?.[index]?.options?.[optionIndex] && (
-              <p className="text-xs text-destructive mt-1 ml-6">
+              <p className="text-xs text-destructive mt-1 ml-2">
                 {errors.questions?.[index]?.options?.[optionIndex]?.message}
               </p>
             )}
