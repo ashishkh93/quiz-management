@@ -1,0 +1,102 @@
+import { NextRequest, NextResponse } from "next/server";
+import { getCookie } from "../../utils/server/server-util";
+import { createAuthenticatedAxios } from "../../utils/server/axiosServer";
+import { verifyJwt } from "@/auth/context/jwt/utils";
+
+export const authorizeAction = (handler: HandlerFn) => {
+  return async (
+    req: NextRequest,
+    context: Record<string, any>,
+    ...args: any[]
+  ): Promise<NextResponse> => {
+    const authObj = await getCookie();
+
+    if (!authObj) {
+      return NextResponse.json(
+        { success: false, message: "Unauthorized" },
+        { status: 401 }
+      );
+    }
+
+    let decoded = verifyJwt(authObj.accessToken) as CustomJwtPayload;
+
+    if (decoded?.error) {
+      return NextResponse.json(
+        { message: decoded?.error || "Invalid or expired token" },
+        { status: 401 }
+      );
+    }
+
+    let form = {};
+    const contentType = req.headers.get("Content-Type") || "";
+
+    if (req.method !== "GET") {
+      if (contentType.includes("application/json")) {
+        form = await req?.json();
+      } else if (
+        contentType.includes("application/x-www-form-urlencoded") ||
+        contentType.includes("multipart/form-data")
+      ) {
+        const formData = await req.formData();
+        form = Object.fromEntries(formData.entries());
+      } else if (contentType.includes("text/plain")) {
+        const text = await req.text();
+        try {
+          form = JSON.parse(text);
+        } catch {
+          form = { text };
+        }
+      }
+    }
+
+    const extendedContext: HandlerContext = {
+      ...context,
+      token: decoded?.accessToken ?? "",
+      user: decoded,
+      form,
+    };
+
+    return handler(req, extendedContext, ...args);
+  };
+};
+
+export const apiCall = async ({
+  url,
+  data = {},
+  method = "get",
+  headers = {},
+}: ApiCallProps): Promise<ApiCallResponse> => {
+  const axios = createAuthenticatedAxios();
+
+  const isGet = method.toLowerCase() === "get";
+  const initDataKey = isGet ? "params" : "data";
+
+  const init = {
+    url: url,
+    method,
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      ...headers,
+    },
+    [initDataKey]: data,
+  };
+
+  try {
+    const res = await axios.request(init);
+
+    return {
+      status: true,
+      statusCode: res.status,
+      data: res.data,
+    };
+  } catch (error: any) {
+    const message = error?.message || "Server error";
+    return {
+      status: false,
+      statusCode: error?.statusCode || 500,
+      message,
+      data: error?.data || null,
+    };
+  }
+};
