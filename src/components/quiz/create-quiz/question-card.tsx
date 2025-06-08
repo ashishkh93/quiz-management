@@ -105,22 +105,21 @@ export function QuestionCard({ index, form, onRemove }: QuestionCardProps) {
                   className="h-8 !border-0 !pl-0 !shadow-none"
                 />
               </div>
-              <Button
-                type="button"
-                className="p-6 border rounded-md bg-gray-100 hover:bg-gray-200"
-              >
-                {optionIndex === 3 ? (
-                  <Plus
-                    className="w-4 h-4 text-black"
-                    onClick={handleAddOption}
-                  />
-                ) : (
-                  <Trash2
-                    className="w-4 h-4 text-black"
-                    onClick={() => handleRemoveOption(optionIndex)}
-                  />
-                )}
-              </Button>
+              {optionIndex === options.length - 1 ? (
+                <div
+                  className="p-4 border rounded-md bg-gray-100 hover:bg-gray-200 cursor-pointer"
+                  onClick={handleAddOption}
+                >
+                  <Plus className="w-4 h-4 text-black !cursor-pointer" />
+                </div>
+              ) : (
+                <div
+                  className="p-4 border rounded-md bg-gray-100 hover:bg-gray-200 cursor-pointer"
+                  onClick={() => handleRemoveOption(optionIndex)}
+                >
+                  <Trash2 className="w-4 h-4 text-black !cursor-pointer" />
+                </div>
+              )}
             </div>
             {errors.questions?.[index]?.options?.[optionIndex] && (
               <p className="text-xs text-destructive mt-1 ml-2">
@@ -131,7 +130,7 @@ export function QuestionCard({ index, form, onRemove }: QuestionCardProps) {
         ))}
       </div>
 
-      {options.length < 6 && (
+      {/* {options.length < 6 && (
         <button
           type="button"
           onClick={handleAddOption}
@@ -140,7 +139,7 @@ export function QuestionCard({ index, form, onRemove }: QuestionCardProps) {
           <Plus className="h-3 w-3" />
           <span>Add Option</span>
         </button>
-      )}
+      )} */}
     </div>
   );
 }
