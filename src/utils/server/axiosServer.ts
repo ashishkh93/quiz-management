@@ -15,7 +15,8 @@ export async function createAuthenticatedAxios() {
       const authObj = JSON.parse(authCookie.value);
 
       if (authObj?.token) {
-        instance.defaults.headers.common.Authorization = `Bearer ${authObj.token}`;
+        // instance.defaults.headers.common.Authorization = `Bearer ${authObj.token}`;
+        instance.defaults.headers.common.authorization = authObj.token;
       }
     } catch (err) {
       console.error("Failed to parse auth cookie:", err);
@@ -25,7 +26,9 @@ export async function createAuthenticatedAxios() {
   instance.interceptors.response.use(
     (res) => res,
     (err) => {
-      const errorData = err?.response?.data || { message: "Server Error" };
+      const errorData = {
+        message: err?.response?.data?.error || "Server Error",
+      };
       return Promise.reject(errorData);
     }
   );

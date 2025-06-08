@@ -9,7 +9,6 @@ import { toast } from "sonner";
 import { quizSchema } from "@/utils/schema/quiz.schema";
 import GradientButton from "@/components/molecules/gradient-button/gradient-button";
 import { createNewQuiz } from "@/api-service/quiz.service";
-import axios from "axios";
 
 const QuizForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -45,9 +44,29 @@ const QuizForm = () => {
     try {
       setIsSubmitting(true);
 
-      console.log("Form submitted:", data);
+      data = {
+        ...data,
+        moderator: "6838627c76736756555949b9",
+      };
 
-      const quizRes = (await createNewQuiz(data)) as IDefaultResponse;
+      const formData = new FormData();
+
+      Object.entries(data).forEach(([key, value]) => {
+        if (key === "questions") {
+          // Send entire questions array as JSON
+          formData.append(key, JSON.stringify(value));
+        } else if (value instanceof File) {
+          formData.append(key, value);
+        } else if (Array.isArray(value)) {
+          formData.append(key, JSON.stringify(value)); // optional: depends on backend
+        } else if (typeof value === "object" && value !== null) {
+          formData.append(key, JSON.stringify(value)); // e.g., nested objects
+        } else if (value !== undefined && value !== null) {
+          formData.append(key, String(value));
+        }
+      });
+
+      const quizRes = (await createNewQuiz(formData)) as IDefaultResponse;
 
       if (!quizRes.status) {
         toast.error(quizRes?.message ?? "Quiz created successfully!");
