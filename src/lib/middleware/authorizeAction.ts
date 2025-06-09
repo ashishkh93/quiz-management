@@ -13,7 +13,7 @@ export const authorizeAction = (handler: HandlerFn) => {
 
     if (!authObj) {
       return NextResponse.json(
-        { success: false, message: "Unauthorized" },
+        { status: false, message: "Unauthorized", statusCode: 401 },
         { status: 401 }
       );
     }

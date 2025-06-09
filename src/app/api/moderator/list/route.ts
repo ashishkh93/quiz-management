@@ -4,9 +4,11 @@ import { endpoints } from "@/utils/server/axios";
 
 export const GET = authorizeAction(async (req: NextRequest) => {
   const search = req.nextUrl.searchParams.get("search") || "";
+
   const result = await apiCall({
-    url: `${endpoints.moderator.list}?search=${search}`,
+    url: endpoints.moderator.list,
     method: "get",
+    data: { search },
   });
 
   return Response.json(result, { status: result.statusCode });

@@ -19,7 +19,7 @@ interface CustomDatePickerProps {
   className?: string;
   error?: string;
   placeholder?: string;
-  value?: Date;
+  value?: Date | string;
   setValue?: UseFormSetValue<any>;
 }
 

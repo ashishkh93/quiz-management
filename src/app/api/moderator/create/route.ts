@@ -3,13 +3,13 @@
 import { endpoints } from "@/utils/server/axios";
 import { apiCall, authorizeAction } from "src/lib/middleware/authorizeAction";
 
-export const POST = authorizeAction(async (_req: any, _context: any) => {
-  const body = _req.body;
+export const POST = authorizeAction(async (_req: any, context) => {
+  const { form } = context;
 
   const result = await apiCall({
     url: endpoints.moderator.create,
     method: "post",
-    data: body,
+    data: form,
   });
 
   return Response.json(result, { status: result.statusCode });

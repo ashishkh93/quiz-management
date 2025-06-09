@@ -1,19 +1,11 @@
 "use client";
 
-import {
-  Calendar,
-  Clock,
-  Users,
-  DollarSign,
-  Info,
-  MailIcon,
-} from "lucide-react";
+import { Clock } from "lucide-react";
 import { UseFormReturn } from "react-hook-form";
 import { cn } from "@/lib/utils";
 import InputField from "@/components/shared/input/InputField";
 import DatePicker from "@/components/shared/datepicker/DatePicker";
 import RadioGroupField from "@/components/shared/radio-group/radio-group";
-import SelectField from "@/components/shared/select-field/select-field";
 import TextareaField from "@/components/shared/textarea-field/textarea-field";
 import ImageDropzone from "@/components/shared/dropzone/dropzone";
 import AssignModeratorPopup from "./assign-moderator-popup";
@@ -30,11 +22,6 @@ export function QuizDetails({ form }: QuizDetailsProps) {
     setValue,
   } = form;
 
-  const moderators = [
-    { label: "John Doe", value: "John Doe" },
-    { label: "John Smith", value: "John Smith" },
-  ];
-
   return (
     <div className="bg-white rounded-lg border border-gray-200 p-6">
       <h3 className="font-medium text-gray-700 mb-6">Quiz Details</h3>
@@ -44,27 +31,6 @@ export function QuizDetails({ form }: QuizDetailsProps) {
           value={form.watch()?.image}
           onChange={(file: File | null) => setValue("image", file)}
         />
-        {/* <div className="w-full h-40 border-2 border-dashed border-gray-300 rounded-md flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 transition-colors">
-          <div className="rounded-full bg-gray-100 p-2 mb-2">
-            <svg
-              className="w-6 h-6 text-gray-500"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M12 4v16m8-8H4"
-              ></path>
-            </svg>
-          </div>
-          <p className="text-sm text-gray-500">
-            Upload or Drag & Drop an image
-          </p>
-        </div> */}
       </div>
 
       <div className="mb-4">
@@ -165,16 +131,10 @@ export function QuizDetails({ form }: QuizDetailsProps) {
       </div>
 
       <div className="mb-4">
-        <AssignModeratorPopup />
-        {/* <SelectField
-          label="Assign Moderator"
-          placeholder="Select Moderator"
-          value={form.watch()?.moderator}
-          onChange={(val) => form.setValue("moderator", val)}
-          options={moderators}
-          error={errors.moderator?.message as string}
-          // className=""
-        /> */}
+        <AssignModeratorPopup
+          setValue={setValue}
+          assignedModeratorId={watch()?.moderator}
+        />
       </div>
 
       <div>
