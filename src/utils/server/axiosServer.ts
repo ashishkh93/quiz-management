@@ -15,7 +15,6 @@ export async function createAuthenticatedAxios() {
       const authObj = JSON.parse(authCookie.value);
 
       if (authObj?.token) {
-        // instance.defaults.headers.common.Authorization = `Bearer ${authObj.token}`;
         instance.defaults.headers.common.authorization = authObj.token;
       }
     } catch (err) {
@@ -26,8 +25,18 @@ export async function createAuthenticatedAxios() {
   instance.interceptors.response.use(
     (res) => res,
     (err) => {
+      let msgObj = err?.response?.data;
+      let msg = "Server Error";
+
+      if ("message" in msgObj) {
+        msg = err?.response?.data?.message;
+      } else {
+        msg = err?.response?.data?.error;
+      }
+
       const errorData = {
-        message: err?.response?.data?.error || "Server Error",
+        message: msg,
+        statusCode: err?.status || 500,
       };
       return Promise.reject(errorData);
     }

@@ -59,7 +59,7 @@ const ImageDropzone: React.FC<ImageDropzoneProps> = ({
               src={preview}
               alt="Uploaded"
               fill
-              className="object-contain rounded-md"
+              className="rounded-md !w-full !h-full"
             />
             <button
               type="button"
