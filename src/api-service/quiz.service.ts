@@ -7,3 +7,9 @@ export const createNewQuiz = (data: FormData) => {
     data,
   });
 };
+
+export const getQuizDetail = (id: string) => {
+  return apiClient(`${endpoints.quiz.next_detail}/${id}`, {
+    method: "GET"
+  });
+};

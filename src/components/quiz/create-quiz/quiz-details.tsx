@@ -16,6 +16,7 @@ import RadioGroupField from "@/components/shared/radio-group/radio-group";
 import SelectField from "@/components/shared/select-field/select-field";
 import TextareaField from "@/components/shared/textarea-field/textarea-field";
 import ImageDropzone from "@/components/shared/dropzone/dropzone";
+import AssignModeratorPopup from "./assign-moderator-popup";
 
 interface QuizDetailsProps {
   form: UseFormReturn<QuizFormValues>;
@@ -164,7 +165,8 @@ export function QuizDetails({ form }: QuizDetailsProps) {
       </div>
 
       <div className="mb-4">
-        <SelectField
+        <AssignModeratorPopup />
+        {/* <SelectField
           label="Assign Moderator"
           placeholder="Select Moderator"
           value={form.watch()?.moderator}
@@ -172,7 +174,7 @@ export function QuizDetails({ form }: QuizDetailsProps) {
           options={moderators}
           error={errors.moderator?.message as string}
           // className=""
-        />
+        /> */}
       </div>
 
       <div>

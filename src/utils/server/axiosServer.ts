@@ -15,8 +15,7 @@ export async function createAuthenticatedAxios() {
       const authObj = JSON.parse(authCookie.value);
 
       if (authObj?.token) {
-        // instance.defaults.headers.common.Authorization = `Bearer ${authObj.token}`;
-        instance.defaults.headers.common.authorization = authObj.token;
+        instance.defaults.headers.common.Authorization = `${authObj.token}`;
       }
     } catch (err) {
       console.error("Failed to parse auth cookie:", err);
