@@ -16,8 +16,8 @@ import { ModeratorFormValues } from "@/utils/schema/moderator.schema";
 import { UseFormSetValue } from "react-hook-form";
 
 interface AssignModeratorPopupProps {
-  setValue: UseFormSetValue<QuizFormValues>;
-  assignedModeratorId: string | number;
+  setValue?: UseFormSetValue<QuizFormValues>;
+  assignedModeratorId?: string | number;
 }
 
 export default function AssignModeratorPopup({
@@ -49,7 +49,7 @@ export default function AssignModeratorPopup({
   };
 
   const handleAssign = (userId: string) => {
-    setValue("moderator", userId);
+    setValue?.("moderator", userId);
     setIsOpen(false);
   };
 

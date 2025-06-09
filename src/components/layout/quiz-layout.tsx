@@ -22,7 +22,11 @@ const QuizLayout = ({ children }: IChildren) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const navigation = [
-    { name: "Quiz Management", href: paths.quiz_management.root, icon: LayoutDashboard },
+    {
+      name: "Quiz Management",
+      href: paths.quiz_management.root,
+      icon: LayoutDashboard,
+    },
     // { name: "Add New", href: "/dashboard/new", icon: Plus },
   ];
 
@@ -103,12 +107,7 @@ const QuizLayout = ({ children }: IChildren) => {
                       href={item.href}
                       className={`
                         flex items-center space-x-3 px-3 py-2 rounded-lg text-sm font-medium
-                        transition-colors duration-200
-                        ${
-                          isActive
-                            ? "bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-200"
-                            : "text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
-                        }
+                        transition-colors duration-200 bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-200
                       `}
                       onClick={() => setSidebarOpen(false)}
                     >

@@ -1,7 +1,7 @@
 import { Input } from "../../ui/input";
 import React from "react";
 
-const InputField: React.FC<CustomInputFieldProps> = ({
+const InputField = <T extends Record<string, any>>({
   id,
   label,
   className,
@@ -13,7 +13,7 @@ const InputField: React.FC<CustomInputFieldProps> = ({
   register,
   error,
   ...props
-}) => {
+}: CustomInputFieldProps<T>): React.ReactElement => {
   return (
     <div className="flex flex-col items-start gap-1 w-full">
       {label && <label className="text-sm text-[#3b3a3a]">{label}</label>}
@@ -40,7 +40,7 @@ const InputField: React.FC<CustomInputFieldProps> = ({
           </div>
         )}
       </div>
-      {error && <span className="text-red-500 text-sm">{error}</span>}
+      {error && <span className="text-red-500 !text-[12px]">{error}</span>}
     </div>
   );
 };

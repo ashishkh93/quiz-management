@@ -9,9 +9,12 @@ import { toast } from "sonner";
 import { quizSchema } from "@/utils/schema/quiz.schema";
 import GradientButton from "@/components/molecules/gradient-button/gradient-button";
 import { createNewQuiz } from "@/api-service/quiz.service";
+import { useRouter } from "next/navigation";
+import { paths } from "@/routes/path";
 
 const QuizForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const router = useRouter();
 
   const defaultValues: Partial<QuizFormValues> = {
     title: "",
@@ -44,11 +47,6 @@ const QuizForm = () => {
     try {
       setIsSubmitting(true);
 
-      data = {
-        ...data,
-        moderator: "6838627c76736756555949b9",
-      };
-
       const formData = new FormData();
 
       Object.entries(data).forEach(([key, value]) => {
@@ -71,6 +69,7 @@ const QuizForm = () => {
       if (!quizRes.status) {
         toast.error(quizRes?.message ?? "Quiz created successfully!");
       } else {
+        router.push(paths.quiz_management.schedule);
         toast.success(quizRes?.message ?? "Quiz created successfully!");
         form.reset();
       }

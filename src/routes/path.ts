@@ -12,5 +12,6 @@ export const paths = {
   quiz_management: {
     root: "/quiz-management",
     create: "/quiz-management/create",
+    schedule: "/quiz-management/schedule",
   },
 };

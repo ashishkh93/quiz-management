@@ -2,9 +2,9 @@ import { LucideIcon } from "lucide-react";
 import { UseFormRegisterReturn } from "react-hook-form";
 
 declare global {
-  interface CustomInputFieldProps {
-    name: string;
-    id?: string;
+  interface CustomInputFieldProps<T extends Record<string, any>> {
+    name?: string;
+    id: string;
     label?: string;
     className?: string;
     iconClassName?: string;
@@ -12,7 +12,7 @@ declare global {
     rightIcon?: React.ReactNode;
     placeholder?: string;
     type?: string;
-    register?: UseFormRegister<any>;
+    register?: UseFormRegister<T>;
     error?: FieldError;
   }
 }
