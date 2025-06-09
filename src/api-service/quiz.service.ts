@@ -13,3 +13,9 @@ export const getQuizDetail = (id: string) => {
     method: "GET"
   });
 };
+
+export const getQuizList = (search: string) => {
+  return apiClient(`${endpoints.quiz.next_list}?search=${search}`, {
+    method: "GET"
+  });
+};

@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Clock, Eye, MousePointer, UserX, User } from "lucide-react";
 import { getQuizDetail } from "@/api-service/quiz.service";
 
-export default function ViewQuiz() {
+export default function QuizDetail() {
   const [hoveredQuestion, setHoveredQuestion] = useState<number | null>(null);
   const [selectedAnswers, setSelectedAnswers] = useState<{
     [key: number]: string;

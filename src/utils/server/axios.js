@@ -28,6 +28,8 @@ export const endpoints = {
     create: ADMIN_BASE_PATH + "/quiz/create",
     next_detail: "/api/quiz/detail",
     detail: ADMIN_BASE_PATH + "/quiz/detail",
+    next_list: "/api/quiz/list",
+    list: ADMIN_BASE_PATH + "/quiz/list-all"
   },
   moderator: {
     next_create: "/api/moderator/create",

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { ReactNode, useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -16,13 +16,15 @@ import { ModeratorFormValues } from "@/utils/schema/moderator.schema";
 import { UseFormSetValue } from "react-hook-form";
 
 interface AssignModeratorPopupProps {
-  setValue: UseFormSetValue<QuizFormValues>;
-  assignedModeratorId: string | number;
+  setValue?: UseFormSetValue<QuizFormValues>;
+  assignedModeratorId?: string | number;
+  children?: ReactNode;
 }
 
 export default function AssignModeratorPopup({
   setValue,
   assignedModeratorId,
+  children,
 }: AssignModeratorPopupProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -49,7 +51,7 @@ export default function AssignModeratorPopup({
   };
 
   const handleAssign = (userId: string) => {
-    setValue("moderator", userId);
+    setValue && setValue("moderator", userId);
     setIsOpen(false);
   };
 
@@ -68,23 +70,28 @@ export default function AssignModeratorPopup({
 
   return (
     <div>
-      <div
-        onClick={() => setIsOpen(true)}
-        className="mb-4 flex items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground cursor-pointer"
-      >
-        <span>{assignedModeratorId ? moderatorVal : "Assign Moderator"}</span>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-4 w-4 text-muted-foreground"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-        >
-          <path
-            fillRule="evenodd"
-            d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.25 8.29a.75.75 0 01-.02-1.06z"
-            clipRule="evenodd"
-          />
-        </svg>
+      <div onClick={() => setIsOpen(true)}>
+        {children ? (
+          children
+        ) : (
+          <div className="mb-4 flex items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground cursor-pointer">
+            <span>
+              {assignedModeratorId ? moderatorVal : "Assign Moderator"}
+            </span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-4 w-4 text-muted-foreground"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.25 8.29a.75.75 0 01-.02-1.06z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </div>
+        )}
       </div>
 
       <Dialog
@@ -147,14 +154,16 @@ export default function AssignModeratorPopup({
                             {user.email}
                           </div>
                         </div>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleAssign(user._id)}
-                          className="ml-4 px-4 py-1 text-sm cursor-pointer"
-                        >
-                          Assign
-                        </Button>
+                        {setValue && (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleAssign(user._id)}
+                            className="ml-4 px-4 py-1 text-sm cursor-pointer"
+                          >
+                            Assign
+                          </Button>
+                        )}
                       </div>
                     ))}
                 </div>
