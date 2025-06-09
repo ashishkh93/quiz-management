@@ -1,15 +1,30 @@
+"use client";
+
+import { paths } from "@/routes/path";
 import { Share2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import React from "react";
 
-const QuizDetailCard = () => {
+const QuizDetailCard = ({ data }: any) => {
+  const router = useRouter();
+
   return (
-    <div className="bg-white rounded-xl shadow-lg overflow-hidden transition duration-300 transform hover:scale-[1.01]">
+    <div
+      className="bg-white rounded-xl shadow-lg overflow-hidden transition duration-300 transform hover:scale-[1.01]"
+      onClick={() =>
+        router.push(`${paths.quiz_management.view}/6845408f5234c131a11745ba`)
+      }
+    >
       {/* Banner Section */}
       <div className="w-full h-40 relative">
         <div className="relative h-40 overflow-hidden rounded-t-xl">
           <div className="-mt-6 -mb-6 h-[calc(100%+3rem)] w-full">
             <img
-              src="/images/quiz-bg.png"
+              src={
+                data?.image
+                  ? process.env.NEXT_PUBLIC_SERVER_URL_IMAGE + data.image
+                  : "/images/quiz-bg.png"
+              }
               alt="Quiz Banner"
               className="w-full h-full object-cover"
             />
@@ -18,7 +33,7 @@ const QuizDetailCard = () => {
 
         {/* Top Left Badge */}
         <div className="absolute top-3 left-3 bg-white text-gray-700 text-xs font-semibold px-3 py-1 rounded-full flex items-center z-10">
-          <span className="mr-1">👥</span> 10 Joining
+          <span className="mr-1">👥</span> {data.joiningPlayer} Joining
         </div>
 
         {/* Top Right Icon */}
@@ -36,11 +51,11 @@ const QuizDetailCard = () => {
       <div className="p-4">
         <div className="flex justify-between items-center">
           <div className="text-sm font-semibold text-gray-800">
-            Untitled Quiz
+            {data.title}
           </div>
           <button className="text-gray-500 hover:text-gray-700">🔗</button>
         </div>
-        <p className="text-sm text-gray-600 mt-1">12th Sep 2024</p>
+        <p className="text-sm text-gray-600 mt-1">{data.date}</p>
       </div>
     </div>
   );

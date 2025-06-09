@@ -13,5 +13,7 @@ export const paths = {
     root: "/quiz-management",
     create: "/quiz-management/create",
     schedule: "/quiz-management/schedule",
+    view: "/quiz-management/view",
+    detail: "/quiz-management/detail",
   },
 };
