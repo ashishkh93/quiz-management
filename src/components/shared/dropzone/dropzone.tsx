@@ -1,8 +1,7 @@
 "use client";
 
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import Image from "next/image";
 import { X } from "lucide-react";
 
 const ImageDropzone: React.FC<ImageDropzoneProps> = ({
@@ -11,9 +10,17 @@ const ImageDropzone: React.FC<ImageDropzoneProps> = ({
   label,
   error,
 }) => {
-  const [preview, setPreview] = useState<string | null>(
-    value ? URL.createObjectURL(value) : null
-  );
+  const [preview, setPreview] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (value) {
+      if (value instanceof File) {
+        setPreview(URL.createObjectURL(value));
+      } else {
+        setPreview(value);
+      }
+    }
+  }, [value]);
 
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
@@ -55,11 +62,10 @@ const ImageDropzone: React.FC<ImageDropzoneProps> = ({
         <input {...getInputProps()} />
         {preview ? (
           <div className="relative w-full h-full flex items-center justify-center">
-            <Image
+            <img
               src={preview}
               alt="Uploaded"
-              fill
-              className="rounded-md !w-full !h-full"
+              className="rounded-md !w-full !h-full object-cover"
             />
             <button
               type="button"

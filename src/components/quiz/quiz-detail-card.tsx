@@ -10,7 +10,7 @@ const QuizDetailCard = ({ data }: any) => {
 
   return (
     <div
-      className="bg-white rounded-xl shadow-lg overflow-hidden transition duration-300 transform hover:scale-[1.01]"
+      className="bg-white rounded-xl shadow-lg overflow-hidden transition duration-300 transform hover:scale-[1.01] cursor-pointer"
       onClick={() =>
         router.push(`${paths.quiz_management.view}/6845408f5234c131a11745ba`)
       }
@@ -37,7 +37,7 @@ const QuizDetailCard = ({ data }: any) => {
         </div>
 
         {/* Top Right Icon */}
-        <div className="absolute top-3 right-3 bg-white text-gray-700 text-xs font-semibold p-2 rounded-full flex items-center z-10">
+        <div className="absolute top-3 right-3 bg-white text-gray-700 text-xs font-semibold p-2 rounded-full flex items-center z-10 hover:scale-110 transition-all duration-300">
           <Share2 className="h-3 w-3 text-gray-600" />
         </div>
 
@@ -53,7 +53,15 @@ const QuizDetailCard = ({ data }: any) => {
           <div className="text-sm font-semibold text-gray-800">
             {data.title}
           </div>
-          <button className="text-gray-500 hover:text-gray-700">🔗</button>
+          <button
+            className="text-gray-500 hover:text-gray-700 hover:scale-125 transition-all duration-300 cursor-pointer"
+            onClick={(e) => {
+              e.stopPropagation();
+              router.push(`${paths.quiz_management.edit(data?._id ?? "")}`);
+            }}
+          >
+            🔗
+          </button>
         </div>
         <p className="text-sm text-gray-600 mt-1">{data.date}</p>
       </div>

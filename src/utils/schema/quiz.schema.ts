@@ -10,31 +10,49 @@ export const questionSchema = z.object({
   isHidden: z.boolean().default(false),
 });
 
+export const onlyQuestionsSchema = z.object({
+  questions: z
+    .array(questionSchema)
+    .min(1, "At least one question is required"),
+});
+
 export const quizSchema = z.object({
   id: z.string().optional(),
   title: z.string().min(1, "Title is required"),
   date: z.string().min(1, "Date is required"),
   // image: z.string().min(1, "Image is required"),
   image: z
-    .instanceof(File)
+    .union([z.instanceof(File), z.string()])
     .nullable()
-    .refine((file) => !file || file.size > 0, "Image is required")
     .refine(
-      (file) => !file || file.type.startsWith("image/"),
-      "Only image files are allowed"
+      (value) => {
+        if (!value) return true; // Allow null or undefined
+        if (typeof value === "string") return value.trim().length > 0; // Validate non-empty string
+        return value.size > 0 && value.type.startsWith("image/"); // Validate File type
+      },
+      {
+        message: "Must be a valid image file or a non-empty string",
+      }
     ),
-
   time: z.string().min(1, "Time is required"),
-  joinType: z.enum(["unlimited", "restricted"]),
+  joinType: z.enum(["unlimited", "restricted"], {
+    errorMap: () => ({ message: "Join type is required" }),
+  }),
   maxUsers: z.coerce.number().default(0),
   quizPrice: z.coerce.number().min(0, "Price must be a positive number"),
   questionCountdown: z.coerce
     .number()
     .min(1, "Countdown must be at least 1 second"),
   description: z.string().min(1, "Description is required"),
-  moderator: z.string().min(1, "Moderator is required"),
+  moderator: z
+    .string({
+      required_error: "Moderator is required", // handles undefined/missing case
+      invalid_type_error: "Moderator must be a string",
+    })
+    .min(1, { message: "Moderator is required" }), // handles empty string
+
   questions: z
     .array(questionSchema)
     .min(1, "At least one question is required"),
-  questionTypes: z.literal("MCQ"),
+  questionTypes: z.string().optional(),
 });

@@ -10,12 +10,12 @@ export const createNewQuiz = (data: FormData) => {
 
 export const getQuizDetail = (id: string) => {
   return apiClient(`${endpoints.quiz.next_detail}/${id}`, {
-    method: "GET"
-  });
+    method: "GET",
+  }) as Promise<IQuizDetailApiRes>;
 };
 
 export const getQuizList = (search: string) => {
   return apiClient(`${endpoints.quiz.next_list}?search=${search}`, {
-    method: "GET"
+    method: "GET",
   });
 };

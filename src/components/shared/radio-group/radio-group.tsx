@@ -39,7 +39,7 @@ const RadioGroupField: React.FC<RadioGroupFieldProps> = ({
           </div>
         ))}
       </RadioGroup>
-      {error && <span className="text-red-500 text-sm">{error}</span>}
+      {error && <span className="text-red-500 text-[12px]">{error}</span>}
     </div>
   );
 };

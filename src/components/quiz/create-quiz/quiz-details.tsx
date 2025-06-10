@@ -69,7 +69,7 @@ export function QuizDetails({ form }: QuizDetailsProps) {
               type="time"
               {...register("time")}
               className={cn(
-                "w-full pl-10 pr-3 py-2 border border-gray-200 rounded-md focus:ring-1 focus:ring-primary focus:border-primary",
+                "w-full pl-10 pr-3 py-2 border border-gray-200 rounded-md focus:ring-1 focus:ring-primary focus:border-primary text-sm",
                 errors.time && "border-destructive focus:ring-destructive"
               )}
             />
@@ -87,11 +87,18 @@ export function QuizDetails({ form }: QuizDetailsProps) {
           id="joinType"
           label=""
           value={form.watch()?.joinType}
-          onChange={(val) => form.setValue("joinType", val)}
+          onChange={(val) =>
+            setValue("joinType", val, {
+              shouldValidate: true,
+              shouldTouch: true,
+              shouldDirty: true,
+            })
+          }
           options={[
             { label: "Unlimited Join", value: "unlimited" },
             { label: "Restrict Join", value: "restricted" },
           ]}
+          error={errors?.joinType?.message ?? ""}
         />
       </div>
 
@@ -134,6 +141,7 @@ export function QuizDetails({ form }: QuizDetailsProps) {
         <AssignModeratorPopup
           setValue={setValue}
           assignedModeratorId={watch()?.moderator}
+          error={errors?.moderator?.message ?? ""}
         />
       </div>
 

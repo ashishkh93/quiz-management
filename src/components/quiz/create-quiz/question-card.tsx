@@ -78,6 +78,7 @@ export function QuestionCard({ index, form, onRemove }: QuestionCardProps) {
           register={register}
           placeholder="Enter quiz name"
           error={errors.questions?.[index]?.question?.message}
+          className="bg-white"
         />
       </div>
 
@@ -90,11 +91,11 @@ export function QuestionCard({ index, form, onRemove }: QuestionCardProps) {
               </label>
             </div>
             <div className="flex items-center gap-2 w-full">
-              <div className="flex items-center gap-2 w-full border rounded-md p-2">
+              <div className="flex items-center gap-2 w-full border rounded-md p-2 bg-white">
                 <Checkbox
                   checked={correctAnswer === optionIndex}
                   onCheckedChange={() => handleSetCorrectAnswer(optionIndex)}
-                  className="w-4 h-4 !border-gray-400"
+                  className="w-4 h-4 !border-gray-400 ml-1"
                 />
                 <InputField
                   id={`questions.${index}.options.${optionIndex}`}
@@ -102,7 +103,7 @@ export function QuestionCard({ index, form, onRemove }: QuestionCardProps) {
                   register={register}
                   placeholder={`Option ${optionIndex + 1}`}
                   // error={errors.questions?.[index]?.options?.[optionIndex]?.message}
-                  className="h-8 !border-0 !pl-0 !shadow-none"
+                  className="h-8 !border-0 !pl-0 !shadow-none bg-white"
                 />
               </div>
               {optionIndex === options.length - 1 ? (

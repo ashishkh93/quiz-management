@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { QuizDetails } from "./quiz-details";
@@ -12,7 +12,9 @@ import { createNewQuiz } from "@/api-service/quiz.service";
 import { useRouter } from "next/navigation";
 import { paths } from "@/routes/path";
 
-const QuizForm = () => {
+const QuizForm: React.FC<{
+  defaultQuizFormValues?: ExtendedQuizFormValues;
+}> = ({ defaultQuizFormValues }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
@@ -37,19 +39,33 @@ const QuizForm = () => {
     questionTypes: "MCQ",
   };
 
-  const form = useForm<QuizFormValues>({
+  const form = useForm<Partial<QuizFormValues>>({
     resolver: zodResolver(quizSchema),
     defaultValues,
     mode: "onChange",
   });
 
+  useEffect(() => {
+    if (defaultQuizFormValues) {
+      form.reset(defaultQuizFormValues);
+    }
+  }, [defaultQuizFormValues, form]);
+
   const onSubmit: SubmitHandler<QuizFormValues> = async (data) => {
+    const allVals = form.getValues() as QuizFormValues;
+    const actualVals = Object.fromEntries(
+      Object.entries(data).map(([key, _value]) => [
+        key,
+        allVals[key as keyof QuizFormValues],
+      ])
+    );
+
     try {
       setIsSubmitting(true);
 
       const formData = new FormData();
 
-      Object.entries(data).forEach(([key, value]) => {
+      Object.entries(actualVals).forEach(([key, value]) => {
         if (key === "questions") {
           // Send entire questions array as JSON
           formData.append(key, JSON.stringify(value));
@@ -80,6 +96,8 @@ const QuizForm = () => {
       setIsSubmitting(false);
     }
   };
+
+  console.log(form.formState?.errors, "errors==");
 
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">

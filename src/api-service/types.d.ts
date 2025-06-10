@@ -28,3 +28,11 @@ interface IAdminApiParams {
   email: string;
   password: string;
 }
+
+type ExtendedQuizFormValues = Partial<QuizFormValues> & {
+  scheduledDate?: string;
+};
+
+interface IQuizDetailApiRes extends Omit<IDefaultResponse, "data"> {
+  data: { data: ExtendedQuizFormValues };
+}

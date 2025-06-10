@@ -6,9 +6,10 @@ import { Plus, Minus } from "lucide-react";
 
 interface QuestionsSectionProps {
   form: UseFormReturn<QuizFormValues>;
+  hideTitle?: boolean;
 }
 
-export function QuestionsSection({ form }: QuestionsSectionProps) {
+export function QuestionsSection({ form, hideTitle }: QuestionsSectionProps) {
   const { setValue, getValues, watch } = form;
 
   const addQuestion = () => {
@@ -32,7 +33,9 @@ export function QuestionsSection({ form }: QuestionsSectionProps) {
   return (
     <>
       <div className="flex flex-col max-h-[calc(100vh-150px)] overflow-hidden">
-        <h3 className="font-medium text-gray-700 mb-6">Questions</h3>
+        {!hideTitle && (
+          <h3 className="font-medium text-gray-700 mb-6">Questions</h3>
+        )}
 
         <div className="space-y-3 overflow-y-auto pr-2 !flex-1">
           {watch()?.questions?.map((_, index: number) => (
