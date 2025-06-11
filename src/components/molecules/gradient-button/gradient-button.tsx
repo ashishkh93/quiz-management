@@ -16,7 +16,7 @@ const GradientButton = ({
     <Button
       className={`h-10 bg-gradient-to-r ${fromGradient} ${toGradient} text-white border-none hover:opacity-90 cursor-pointer ${className}`}
       {...props}
-      disabled={disabled}
+      disabled={disabled || loading}
     >
       {children}
       {loading && <CustomLoader size={20} color="white" />}

@@ -31,8 +31,19 @@ interface IAdminApiParams {
 
 type ExtendedQuizFormValues = Partial<QuizFormValues> & {
   scheduledDate?: string;
+  isHide?: boolean;
 };
 
 interface IQuizDetailApiRes extends Omit<IDefaultResponse, "data"> {
   data: { data: ExtendedQuizFormValues };
+}
+
+interface AddAnnouncementForQuizApiParams {
+  quizId: string;
+  announcement: QuizScheduleFormValues["announcements"];
+}
+
+interface QuizListAPiParams {
+  search?: string;
+  date?: string;
 }

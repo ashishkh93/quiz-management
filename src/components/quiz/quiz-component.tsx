@@ -9,6 +9,8 @@ import { paths } from "@/routes/path";
 import { getQuizList } from "@/api-service/quiz.service";
 import { Input } from "../ui/input";
 import AssignModeratorPopup from "./create-quiz/assign-moderator-popup";
+import moment from "moment";
+import { currentDateToUTC } from "@/lib/utils";
 
 const QuizComponent = () => {
   const router = useRouter();
@@ -19,8 +21,13 @@ const QuizComponent = () => {
   useEffect(() => {
     onload();
   }, [searchTerm]);
+
   const onload = async () => {
-    const quizRes = (await getQuizList(searchTerm)) as any;
+    const quizRes = (await getQuizList({
+      search: searchTerm,
+      date: currentDateToUTC(),
+    })) as any;
+
     setQuizListData(quizRes?.data?.upcoming);
     setQuizHistoryData(quizRes?.data?.history);
   };

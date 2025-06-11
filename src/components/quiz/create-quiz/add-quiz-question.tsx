@@ -26,7 +26,7 @@ const AddQuizQuestion = ({ quizId }: EditQuizProps) => {
     setQuizData(quizRes.data?.data);
   };
 
-  return <AddQuizQuestions quizData={quizData} />;
+  return <AddQuizQuestions quizData={quizData} quizId={quizId} />;
 };
 
 export default AddQuizQuestion;

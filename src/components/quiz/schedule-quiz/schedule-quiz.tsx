@@ -1,11 +1,11 @@
 import React from "react";
 import ScheduleQuizForm from "./schdule-quiz-form";
 
-const ScheduleQuiz = () => {
+const ScheduleQuiz: React.FC<CommonQuizProps> = ({ quizId }) => {
   return (
     <div className="h-full">
       <div className="mx-4 font-bold text-xl">Schedule Quiz</div>
-      <ScheduleQuizForm />
+      <ScheduleQuizForm quizId={quizId} />
     </div>
   );
 };

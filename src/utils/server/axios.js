@@ -31,12 +31,20 @@ export const endpoints = {
     next_list: "/api/quiz/list",
     list: ADMIN_BASE_PATH + "/quiz/list-all",
     next_unlockRoom: "/api/quiz/lock-unlock-room",
-    unlockRoom: ADMIN_BASE_PATH + "/quiz/unlock-room"
+    unlockRoom: ADMIN_BASE_PATH + "/quiz/unlock-room",
+
+    // Question creation endpoints
+    next_que_create: (id) => `/api/quiz/${id}/add-question`,
+    que_create: (id) => ADMIN_BASE_PATH + `/quiz/add-question/${id}`,
+
+    // Add Announcement
+    next_announcement_create: "/api/quiz/add-announcement",
+    announcement_create: ADMIN_BASE_PATH + "/quiz/add-announcement",
   },
   moderator: {
     next_create: "/api/moderator/create",
     create: ADMIN_BASE_PATH + "/quiz/create-moderator",
     next_list: "/api/moderator/list",
-    list: ADMIN_BASE_PATH + "/quiz/list-moderator"
-  }
+    list: ADMIN_BASE_PATH + "/quiz/list-moderator",
+  },
 };

@@ -5,6 +5,8 @@ export const metadata = {
   title: `Quiz Schedule | Dashboard - ${CONFIG.appName}`,
 };
 
-export default function Page() {
-  return <ScheduleQuiz />;
+export default async function Page({ params }: PageProps) {
+  const quizParams = await params;
+
+  return <ScheduleQuiz quizId={quizParams?.id} />;
 }

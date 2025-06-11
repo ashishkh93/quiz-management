@@ -1,20 +1,20 @@
 import { useCallback, useState } from "react";
 
 export const useBoolean = () => {
-  const [state, setState] = useState<boolean>(false);
+  const [bool, setBool] = useState<boolean>(false);
 
   const onTrue = useCallback(() => {
-    setState(true);
+    setBool(true);
   }, []);
 
   const onFalse = useCallback(() => {
-    setState(false);
-  }, [setState]);
+    setBool(false);
+  }, [setBool]);
 
   return {
-    state,
+    bool,
     onTrue,
     onFalse,
-    setState,
+    setBool,
   };
 };

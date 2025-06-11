@@ -86,7 +86,11 @@ const QuizLayout = ({ children }: IChildren) => {
         {/* Sidebar */}
         <nav
           className={`
-          ${sidebarOpen ? "!w-16 translate-x-0" : "!w-64 -translate-x-full"}
+          ${
+            sidebarOpen
+              ? "!w-64 sm:w-16 translate-x-0"
+              : "w-0 sm:!w-16 -translate-x-full"
+          }
           lg:translate-x-0 transition-all duration-200 ease-in-out
           fixed lg:static inset-y-0 left-0 z-50 
           bg-white dark:bg-gray-800 shadow-lg lg:shadow-none
@@ -96,7 +100,7 @@ const QuizLayout = ({ children }: IChildren) => {
         >
           <SimpleBar
             style={{ maxHeight: "100vh" }}
-            className="px-3 py-6 h-full w-full"
+            className="px-3 py-6 h-full"
           >
             <ul className="space-y-2">
               {navigation.map((item) => {
@@ -112,7 +116,7 @@ const QuizLayout = ({ children }: IChildren) => {
                       onClick={() => setSidebarOpen(false)}
                     >
                       <item.icon className="h-5 w-5" />
-                      {!sidebarOpen && <span>{item.name}</span>}
+                      {sidebarOpen && <span>{item.name}</span>}
                     </Link>
                   </li>
                 );

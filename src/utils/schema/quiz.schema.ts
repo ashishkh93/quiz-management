@@ -8,6 +8,7 @@ export const questionSchema = z.object({
     .min(2, "At least 2 options are required"),
   correctAnswer: z.number().min(0, "Correct answer is required"),
   isHidden: z.boolean().default(false),
+  isHide: z.boolean().default(false).optional(),
 });
 
 export const onlyQuestionsSchema = z.object({

@@ -1,12 +1,12 @@
-import { NextRequest } from "next/server";
-import { apiCall, authorizeAction } from "src/lib/middleware/authorizeAction";
 import { endpoints } from "@/utils/server/axios";
+import { apiCall, authorizeAction } from "src/lib/middleware/authorizeAction";
 
 export const POST = authorizeAction(async (_req, context) => {
   const { form } = context;
+  const params = await context?.params;
 
   const result = await apiCall({
-    url: endpoints.quiz.list,
+    url: endpoints.quiz.que_create(params?.id),
     method: "post",
     data: form,
   });

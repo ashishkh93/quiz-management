@@ -6,14 +6,22 @@ import { Plus, Minus } from "lucide-react";
 import { announcementSchema } from "@/utils/schema/schedule.schema";
 import InputField from "@/components/shared/input/InputField";
 import GradientButton from "@/components/molecules/gradient-button/gradient-button";
+import { addAnnouncementForQuiz } from "@/api-service/quiz.service";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { paths } from "@/routes/path";
+import { useBoolean } from "@/hooks/useBoolean";
 
-const ScheduleQuizForm = () => {
+const ScheduleQuizForm: React.FC<CommonQuizProps> = ({ quizId }) => {
+  const router = useRouter();
+  const loading = useBoolean()
+
   const {
     control,
     handleSubmit,
     formState: { errors },
-    watch,
     register,
+    reset,
   } = useForm<QuizScheduleFormValues>({
     resolver: zodResolver(announcementSchema),
     defaultValues: {
@@ -26,11 +34,21 @@ const ScheduleQuizForm = () => {
     name: "announcements",
   });
 
-  const watchedFields = watch("announcements");
+  const onSubmit = async (data: QuizScheduleFormValues) => {
+    loading.onTrue()
+    const payload = {
+      quizId,
+      announcement: data?.announcements,
+    };
+    const quizRes = (await addAnnouncementForQuiz(payload)) as IDefaultResponse;
 
-  const onSubmit = (data: QuizScheduleFormValues) => {
-    console.log("Form submitted:", data);
-    // Handle form submission here
+    if (!quizRes.status) {
+      toast.error(quizRes?.message ?? "Quiz created successfully!");
+    } else {
+      router.push(paths.quiz_management.root);
+      reset();
+    }
+    loading.onFalse()
   };
 
   return (
@@ -124,6 +142,7 @@ const ScheduleQuizForm = () => {
                 toGradient="to-[#283891]"
                 className="w-[200px]"
                 type="submit"
+                loading={loading.bool}
               >
                 Scheduler Quiz
               </GradientButton>
