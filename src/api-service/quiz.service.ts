@@ -19,3 +19,9 @@ export const getQuizList = (search: string) => {
     method: "GET",
   });
 };
+
+export const unlockRoom = (roomId: string) => {
+  return apiClient(`${endpoints.quiz.next_unlockRoom}/${roomId}`, {
+    method: "PUT",
+  });
+};

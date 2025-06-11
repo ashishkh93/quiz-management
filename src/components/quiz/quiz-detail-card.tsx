@@ -10,10 +10,8 @@ const QuizDetailCard = ({ data }: any) => {
 
   return (
     <div
-      className="bg-white rounded-xl shadow-lg overflow-hidden transition duration-300 transform hover:scale-[1.01] cursor-pointer"
-      onClick={() =>
-        router.push(`${paths.quiz_management.view}/6845408f5234c131a11745ba`)
-      }
+      className="bg-white rounded-xl shadow-lg overflow-hidden transition duration-300 transform hover:scale-[1.01]"
+      onClick={() => router.push(`${paths.quiz_management.view}/${data._id}`)}
     >
       {/* Banner Section */}
       <div className="w-full h-40 relative">

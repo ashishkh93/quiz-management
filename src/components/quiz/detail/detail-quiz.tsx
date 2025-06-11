@@ -5,19 +5,22 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Clock, Eye, MousePointer, UserX, User } from "lucide-react";
 import { getQuizDetail } from "@/api-service/quiz.service";
+import UrlModal from "../url-modal";
+import LockRoomModal from "../lock-room-modal";
 
-export default function QuizDetail() {
+export default function QuizDetail({ id }: { id: string }) {
   const [hoveredQuestion, setHoveredQuestion] = useState<number | null>(null);
   const [selectedAnswers, setSelectedAnswers] = useState<{
     [key: number]: string;
   }>({});
   const [quizData, setQuizData] = useState<any>({});
+  const [lockRoomModalOpen, setLockRoomModalOpen] = useState(false);
 
   useEffect(() => {
     onload();
   }, []);
   const onload = async () => {
-    const quizRes = (await getQuizDetail("6845408f5234c131a11745ba")) as any;
+    const quizRes = (await getQuizDetail(id)) as any;
     console.log("quizRes: ", quizRes);
     setQuizData(quizRes.data.data);
   };
@@ -103,7 +106,10 @@ export default function QuizDetail() {
             <Button className="bg-green-600 hover:bg-green-700 text-white px-6">
               Add Question
             </Button>
-            <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6">
+            <Button
+              className="bg-blue-600 hover:bg-blue-700 text-white px-6"
+              onClick={() => setLockRoomModalOpen(true)}
+            >
               Lock Room
             </Button>
           </div>
@@ -254,12 +260,12 @@ export default function QuizDetail() {
                     </div>
 
                     {/* Tooltip */}
-                    {hoveredQuestion === question.id && (
+                    {/* {hoveredQuestion === question.id && (
                       <div className="absolute top-4 right-4 bg-black text-white text-xs rounded px-2 py-1 z-10">
                         Question {question.id} details
                         <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-black"></div>
                       </div>
-                    )}
+                    )} */}
                   </CardContent>
                 </Card>
               ))}
@@ -345,6 +351,11 @@ export default function QuizDetail() {
           </div>
         </div>
       </div>
+      <LockRoomModal
+        open={lockRoomModalOpen}
+        onOpenChange={setLockRoomModalOpen}
+        id={id}
+      />
     </div>
   );
 }

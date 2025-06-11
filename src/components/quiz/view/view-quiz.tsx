@@ -5,6 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useEffect, useState } from "react";
+import UrlModal from "../url-modal";
 
 export default function ViewQuiz({ id }: { id: string }) {
   const participants = [
@@ -15,6 +16,7 @@ export default function ViewQuiz({ id }: { id: string }) {
     { id: 5, name: "User 5", avatar: "/images/user.jpg" },
   ];
   const [quizData, setQuizData] = useState<any>({});
+  const [urlModalOpen, setUrlModalOpen] = useState(false);
 
   useEffect(() => {
     onload();
@@ -183,9 +185,14 @@ export default function ViewQuiz({ id }: { id: string }) {
           </Card>
         </div>
 
+        <UrlModal open={urlModalOpen} onOpenChange={setUrlModalOpen} id={id} />
+
         {/* Start Quiz Button */}
         <div className="mt-6">
-          <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2">
+          <Button
+            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2"
+            onClick={() => setUrlModalOpen(true)}
+          >
             Start Quiz Now
           </Button>
         </div>

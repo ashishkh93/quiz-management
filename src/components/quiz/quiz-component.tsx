@@ -21,8 +21,8 @@ const QuizComponent = () => {
   }, [searchTerm]);
   const onload = async () => {
     const quizRes = (await getQuizList(searchTerm)) as any;
-    setQuizListData(quizRes.data?.upcoming);
-    setQuizHistoryData(quizRes.data?.history);
+    setQuizListData(quizRes?.data?.upcoming);
+    setQuizHistoryData(quizRes?.data?.history);
   };
 
   return (
@@ -51,7 +51,7 @@ const QuizComponent = () => {
         </div>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6 mb-10">
-        {quizListData.length > 0 &&
+        {quizListData?.length > 0 &&
           quizListData.map((data: any, index: number) => (
             <Fragment key={index}>
               <QuizDetailCard data={data} />
@@ -63,7 +63,7 @@ const QuizComponent = () => {
           Quiz History
         </Typography>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
-          {quizHistoryData.length > 0 &&
+          {quizHistoryData?.length > 0 &&
             quizHistoryData.map((data: any, index: number) => (
               <Fragment key={index}>
                 <QuizDetailCard data={data} />

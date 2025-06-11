@@ -29,7 +29,9 @@ export const endpoints = {
     next_detail: "/api/quiz/detail",
     detail: ADMIN_BASE_PATH + "/quiz/detail",
     next_list: "/api/quiz/list",
-    list: ADMIN_BASE_PATH + "/quiz/list-all"
+    list: ADMIN_BASE_PATH + "/quiz/list-all",
+    next_unlockRoom: "/api/quiz/lock-unlock-room",
+    unlockRoom: ADMIN_BASE_PATH + "/quiz/unlock-room"
   },
   moderator: {
     next_create: "/api/moderator/create",
