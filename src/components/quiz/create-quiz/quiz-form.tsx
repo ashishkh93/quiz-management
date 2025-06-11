@@ -59,42 +59,43 @@ const QuizForm: React.FC<{
         allVals[key as keyof QuizFormValues],
       ])
     );
+    console.log("actualVals: ", actualVals);
 
-    try {
-      setIsSubmitting(true);
+    // try {
+    //   setIsSubmitting(true);
 
-      const formData = new FormData();
+    //   const formData = new FormData();
 
-      Object.entries(actualVals).forEach(([key, value]) => {
-        if (key === "questions") {
-          // Send entire questions array as JSON
-          formData.append(key, JSON.stringify(value));
-        } else if (value instanceof File) {
-          formData.append(key, value);
-        } else if (Array.isArray(value)) {
-          formData.append(key, JSON.stringify(value)); // optional: depends on backend
-        } else if (typeof value === "object" && value !== null) {
-          formData.append(key, JSON.stringify(value)); // e.g., nested objects
-        } else if (value !== undefined && value !== null) {
-          formData.append(key, String(value));
-        }
-      });
+    //   Object.entries(actualVals).forEach(([key, value]) => {
+    //     if (key === "questions") {
+    //       // Send entire questions array as JSON
+    //       formData.append(key, JSON.stringify(value));
+    //     } else if (value instanceof File) {
+    //       formData.append(key, value);
+    //     } else if (Array.isArray(value)) {
+    //       formData.append(key, JSON.stringify(value)); // optional: depends on backend
+    //     } else if (typeof value === "object" && value !== null) {
+    //       formData.append(key, JSON.stringify(value)); // e.g., nested objects
+    //     } else if (value !== undefined && value !== null) {
+    //       formData.append(key, String(value));
+    //     }
+    //   });
 
-      const quizRes = (await createNewQuiz(formData)) as IDefaultResponse;
+    //   const quizRes = (await createNewQuiz(formData)) as IDefaultResponse;
 
-      if (!quizRes.status) {
-        toast.error(quizRes?.message ?? "Quiz created successfully!");
-      } else {
-        router.push(paths.quiz_management.schedule);
-        toast.success(quizRes?.message ?? "Quiz created successfully!");
-        form.reset();
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error("Failed to create quiz. Please try again.");
-    } finally {
-      setIsSubmitting(false);
-    }
+    //   if (!quizRes.status) {
+    //     toast.error(quizRes?.message ?? "Quiz created successfully!");
+    //   } else {
+    //     router.push(paths.quiz_management.schedule);
+    //     toast.success(quizRes?.message ?? "Quiz created successfully!");
+    //     form.reset();
+    //   }
+    // } catch (error) {
+    //   console.error(error);
+    //   toast.error("Failed to create quiz. Please try again.");
+    // } finally {
+    setIsSubmitting(false);
+    // }
   };
 
   console.log(form.formState?.errors, "errors==");

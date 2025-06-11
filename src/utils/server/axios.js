@@ -40,6 +40,8 @@ export const endpoints = {
     // Add Announcement
     next_announcement_create: "/api/quiz/add-announcement",
     announcement_create: ADMIN_BASE_PATH + "/quiz/add-announcement",
+    next_show_question: "/api/quiz/show-question",
+    show_question: ADMIN_BASE_PATH + "/quiz/question"
   },
   moderator: {
     next_create: "/api/moderator/create",

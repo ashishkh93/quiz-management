@@ -45,3 +45,10 @@ export const addAnnouncementForQuiz = (
     data,
   });
 };
+
+export const showQuestion = (data: any) => {
+  return apiClient(endpoints.quiz.next_show_question, {
+    method: "POST",
+    data,
+  });
+};

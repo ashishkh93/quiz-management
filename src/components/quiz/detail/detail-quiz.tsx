@@ -4,9 +4,10 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Clock, Eye, MousePointer, UserX, User } from "lucide-react";
-import { getQuizDetail } from "@/api-service/quiz.service";
-import UrlModal from "../url-modal";
+import { getQuizDetail, showQuestion } from "@/api-service/quiz.service";
 import LockRoomModal from "../lock-room-modal";
+import { toast } from "sonner";
+import { getSocket } from "@/lib/socket";
 
 export default function QuizDetail({ id }: { id: string }) {
   const [hoveredQuestion, setHoveredQuestion] = useState<number | null>(null);
@@ -16,14 +17,14 @@ export default function QuizDetail({ id }: { id: string }) {
   const [quizData, setQuizData] = useState<any>({});
   const [lockRoomModalOpen, setLockRoomModalOpen] = useState(false);
 
-  useEffect(() => {
-    onload();
-  }, []);
-  const onload = async () => {
-    const quizRes = (await getQuizDetail(id)) as any;
-    console.log("quizRes: ", quizRes);
-    setQuizData(quizRes.data.data);
-  };
+  // useEffect(() => {
+  //   onload();
+  // }, []);
+  // const onload = async () => {
+  //   const quizRes = (await getQuizDetail(id)) as any;
+  //   // console.log("quizRes: ", quizRes);
+  //   setQuizData(quizRes.data.data);
+  // };
 
   const questions = [
     {
@@ -95,6 +96,43 @@ export default function QuizDetail({ id }: { id: string }) {
       [questionId]: answer,
     }));
   };
+
+  const onShowQuestionClick = async (questionId: string) => {
+    const moderatorRes = (await showQuestion({
+      quizId: id,
+      questionId: questionId,
+    })) as IDefaultResponse;
+    console.log("moderatorRes: ", moderatorRes);
+    if (!moderatorRes.status) {
+      toast.error(moderatorRes?.message ?? "Moderator created successfully!");
+    } else {
+      toast.success(moderatorRes?.message ?? "Moderator created successfully!");
+    }
+  };
+
+  useEffect(() => {
+    const socket = getSocket();
+    console.log("socket: ", socket);
+    socket.on("connect", () => {
+      console.log("Socket connected with ID:", socket.id);
+    });
+
+    // Emit the quiz_detail event with quizId
+    socket.emit("quiz_detail", { quizId: id });
+
+    // Optional: Listen for response
+    socket.on("quiz_detail", (data) => {
+      console.log("Quiz Detail Data:", data);
+      if (data?.data) {
+        setQuizData(data?.data);
+      }
+    });
+
+    // Clean up
+    return () => {
+      socket.off("quiz_detail");
+    };
+  }, [id]);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -253,7 +291,12 @@ export default function QuizDetail({ id }: { id: string }) {
                             {question.timer} Seconds
                           </span>
                         </div>
-                        <Button className="bg-green-600 hover:bg-green-700 text-white px-6">
+                        <Button
+                          className="bg-green-600 hover:bg-green-700 text-white px-6"
+                          onClick={() => {
+                            onShowQuestionClick(question._id);
+                          }}
+                        >
                           Show Question
                         </Button>
                       </div>
