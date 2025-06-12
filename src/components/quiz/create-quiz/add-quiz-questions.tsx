@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import { toast } from "sonner";
 import { QuestionsSection } from "./questions-section";
 import { onlyQuestionsSchema } from "@/utils/schema/quiz.schema";
@@ -8,9 +8,10 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Card } from "@/components/ui/card";
 import GradientButton from "@/components/molecules/gradient-button/gradient-button";
-import { addNewQuestionInQuiz } from "@/api-service/quiz.service";
 import { useRouter } from "next/navigation";
 import { paths } from "@/routes/path";
+import { useBoolean } from "@/hooks/useBoolean";
+import { useSocket } from "@/hooks/useSocket";
 
 type AddQuizQuestionsProps = {
   quizData: ExtendedQuizFormValues;
@@ -22,25 +23,42 @@ const AddQuizQuestions: React.FC<AddQuizQuestionsProps> = ({
   quizId,
 }) => {
   const router = useRouter();
+  const loadingBool = useBoolean();
+
+  const { connected, emit, once } = useSocket();
+
   const form = useForm({
     resolver: zodResolver(onlyQuestionsSchema),
     defaultValues: {
-      questions: quizData?.questions ?? [],
+      questions: [
+        {
+          question: "",
+          options: ["", "", "", ""],
+          correctAnswer: 0,
+        },
+      ],
     },
     mode: "onChange",
   });
 
-  useEffect(() => {
-    if (quizData?.questions) {
-      form.reset({ questions: quizData?.questions });
-    }
-  }, [quizData?.questions, form]);
+  // useEffect(() => {
+  //   if (quizData?.questions) {
+  //     form.reset({ questions: quizData?.questions });
+  //   }
+  // }, [quizData?.questions, form]);
 
   const onSubmit: SubmitHandler<QuizFormValues> = async (
     data: Partial<ExtendedQuizFormValues>
   ) => {
+    if (!connected) {
+      toast.error("Socket not connected.");
+      return;
+    }
+
+    loadingBool.onTrue();
     data = {
       ...data,
+      quizId: quizId,
       questions: data?.questions?.map((q) => {
         const { isHidden, ...otherParams } = q;
         return {
@@ -49,17 +67,18 @@ const AddQuizQuestions: React.FC<AddQuizQuestionsProps> = ({
       }) as Partial<ExtendedQuizFormValues>,
     };
 
-    const quizRes = (await addNewQuestionInQuiz(
-      data,
-      quizId
-    )) as IDefaultResponse;
+    emit("add_question", data); // Send form data to backend
 
-    if (!quizRes.status) {
-      toast.error(quizRes?.message ?? "Quiz created successfully!");
-    } else {
-      router.push(paths.quiz_management.detail);
-      form.reset();
-    }
+    once("add_question", (response) => {
+      if (response?.code === 200) {
+        router.push(paths.quiz_management.detail + `/${quizId}`);
+      } else {
+        toast.error(
+          response?.error || response?.message || "Failed to add question."
+        );
+      }
+      loadingBool.onFalse();
+    });
   };
 
   return (
@@ -73,6 +92,7 @@ const AddQuizQuestions: React.FC<AddQuizQuestionsProps> = ({
           <button
             type="button"
             className="h-10 w-full sm:w-[200px] px-4 !py-[2px] border border-[#283891] rounded-lg text-gray-700 hover:bg-gray-50 transition-colors text-sm cursor-pointer"
+            onClick={() => router.back()}
           >
             Cancel
           </button>
@@ -81,6 +101,7 @@ const AddQuizQuestions: React.FC<AddQuizQuestionsProps> = ({
             toGradient="to-[#283891]"
             className="w-[200px]"
             type="submit"
+            loading={loadingBool.bool}
           >
             ADD
           </GradientButton>

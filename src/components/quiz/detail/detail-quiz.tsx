@@ -9,6 +9,8 @@ import LockRoomModal from "../lock-room-modal";
 import { toast } from "sonner";
 import { getSocket } from "@/lib/socket";
 import useQuizSocket from "@/hooks/useQuizSocket";
+import { useRouter } from "next/navigation";
+import { paths } from "@/routes/path";
 
 export default function QuizDetail({ id }: { id: string }) {
   const socket = getSocket();
@@ -23,6 +25,9 @@ export default function QuizDetail({ id }: { id: string }) {
   const [activePlayers, setActivePlayers] = useState<number>(0);
   const [eliminatedPlayers, setEliminatedPlayers] = useState<number>(0);
   const [topUsers, setTopUsers] = useState<any[]>([]);
+
+  const router = useRouter();
+
   useQuizSocket(
     id,
     setQuizData,
@@ -65,7 +70,12 @@ export default function QuizDetail({ id }: { id: string }) {
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold text-gray-900">Quiz Details</h1>
           <div className="flex gap-3">
-            <Button className="bg-green-600 hover:bg-green-700 text-white px-6">
+            <Button
+              className="bg-green-600 hover:bg-green-700 text-white px-6 cursor-pointer"
+              onClick={() =>
+                router.push(paths.quiz_management.add_question(id))
+              }
+            >
               Add Question
             </Button>
             <Button

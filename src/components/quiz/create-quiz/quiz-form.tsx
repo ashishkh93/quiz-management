@@ -14,7 +14,8 @@ import { paths } from "@/routes/path";
 
 const QuizForm: React.FC<{
   defaultQuizFormValues?: ExtendedQuizFormValues;
-}> = ({ defaultQuizFormValues }) => {
+  editQuizHandler?: (data: FormData) => Promise<void>;
+}> = ({ defaultQuizFormValues, editQuizHandler }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
@@ -52,6 +53,7 @@ const QuizForm: React.FC<{
   }, [defaultQuizFormValues, form]);
 
   const onSubmit: SubmitHandler<QuizFormValues> = async (data) => {
+    setIsSubmitting(true);
     const allVals = form.getValues() as QuizFormValues;
     const actualVals = Object.fromEntries(
       Object.entries(data).map(([key, _value]) => [
@@ -59,28 +61,32 @@ const QuizForm: React.FC<{
         allVals[key as keyof QuizFormValues],
       ])
     );
-    console.log("actualVals: ", actualVals);
+
+    const formData = new FormData();
+
+    Object.entries(actualVals).forEach(([key, value]) => {
+      if (key === "questions") {
+        // Send entire questions array as JSON
+        formData.append(key, JSON.stringify(value));
+      } else if (value instanceof File) {
+        formData.append(key, value);
+      } else if (Array.isArray(value)) {
+        formData.append(key, JSON.stringify(value)); // optional: depends on backend
+      } else if (typeof value === "object" && value !== null) {
+        formData.append(key, JSON.stringify(value)); // e.g., nested objects
+      } else if (value !== undefined && value !== null) {
+        formData.append(key, String(value));
+      }
+    });
+
+    if (editQuizHandler) {
+      // Edit quiz flow
+      await editQuizHandler?.(formData);
+      setIsSubmitting(false);
+      return;
+    }
 
     try {
-      setIsSubmitting(true);
-
-      const formData = new FormData();
-
-      Object.entries(actualVals).forEach(([key, value]) => {
-        if (key === "questions") {
-          // Send entire questions array as JSON
-          formData.append(key, JSON.stringify(value));
-        } else if (value instanceof File) {
-          formData.append(key, value);
-        } else if (Array.isArray(value)) {
-          formData.append(key, JSON.stringify(value)); // optional: depends on backend
-        } else if (typeof value === "object" && value !== null) {
-          formData.append(key, JSON.stringify(value)); // e.g., nested objects
-        } else if (value !== undefined && value !== null) {
-          formData.append(key, String(value));
-        }
-      });
-
       const quizRes = (await createNewQuiz(formData)) as IDefaultResponse;
 
       if (!quizRes.status) {
@@ -93,14 +99,14 @@ const QuizForm: React.FC<{
         // form.reset();
       }
     } catch (error) {
-      console.error(error);
-      toast.error("Failed to create quiz. Please try again.");
+      toast.error(
+        (error as Error)?.message ||
+          "Failed to create/update quiz. Please try again."
+      );
     } finally {
       setIsSubmitting(false);
     }
   };
-
-  console.log(form.formState?.errors, "errors==");
 
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
@@ -121,7 +127,13 @@ const QuizForm: React.FC<{
           disabled={isSubmitting}
           loading={isSubmitting}
         >
-          {isSubmitting ? "Creating..." : "Next"}
+          {isSubmitting
+            ? editQuizHandler
+              ? "Updating.."
+              : "Creating..."
+            : editQuizHandler
+            ? "Update"
+            : "Next"}
         </GradientButton>
       </div>
     </form>

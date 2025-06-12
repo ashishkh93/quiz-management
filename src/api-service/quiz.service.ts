@@ -8,6 +8,13 @@ export const createNewQuiz = (data: FormData) => {
   });
 };
 
+export const editQuiz = (data: FormData, quizId: string) => {
+  return apiClient(endpoints.quiz.next_edit(quizId), {
+    method: "POST",
+    data,
+  });
+};
+
 export const getQuizDetail = (id: string) => {
   return apiClient(`${endpoints.quiz.next_detail}/${id}`, {
     method: "GET",

@@ -25,6 +25,7 @@ export function QuestionCard({ index, form, onRemove }: QuestionCardProps) {
   const options = watch(`questions.${index}.options`) || ["", "", "", ""];
 
   const handleAddOption = () => {
+    if (options.length === 4) return;
     const currentOptions = [...options];
     currentOptions.push("");
     setValue(`questions.${index}.options`, currentOptions);
@@ -76,7 +77,7 @@ export function QuestionCard({ index, form, onRemove }: QuestionCardProps) {
           id={`questions.${index}.question`}
           name={`questions.${index}.question`}
           register={register}
-          placeholder="Enter quiz name"
+          placeholder="Enter Question"
           error={errors.questions?.[index]?.question?.message}
           className="bg-white"
         />
