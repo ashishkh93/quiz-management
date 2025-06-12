@@ -13,7 +13,7 @@ export const paths = {
     root: "/quiz-management",
     create: "/quiz-management/create",
     edit: (id: string) => `/quiz-management/${id}/edit`,
-    schedule: "/quiz-management/schedule",
+    schedule: (id: string) => `/quiz-management/${id}/schedule`,
     view: "/quiz-management/view",
     detail: "/quiz-management/detail",
   },

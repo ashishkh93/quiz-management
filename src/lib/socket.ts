@@ -1,14 +1,15 @@
+// utils/socket.ts
 import { io, Socket } from "socket.io-client";
 
-const URL =
-  process.env.NEXT_PUBLIC_SERVER_URL_IMAGE || "http://localhost:5000/"; // Replace with your backend
+const URL = process.env.NEXT_PUBLIC_SOCKET_SERVER || "http://localhost:5001";
 
-let socket: Socket;
+let socket: Socket | null = null;
 
 export const getSocket = (): Socket => {
   if (!socket) {
     socket = io(URL, {
       transports: ["websocket"],
+      autoConnect: false, // match Flutter behavior
       reconnection: true,
     });
   }

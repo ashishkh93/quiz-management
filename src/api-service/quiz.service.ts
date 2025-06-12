@@ -27,6 +27,13 @@ export const unlockRoom = (roomId: string) => {
   });
 };
 
+export const addUrl = (roomId: string, data: any) => {
+  return apiClient(`${endpoints.quiz.next_addUrl}/${roomId}`, {
+    method: "PUT",
+    data,
+  });
+};
+
 export const addNewQuestionInQuiz = (
   data: Partial<ExtendedQuizFormValues>,
   quizId: string

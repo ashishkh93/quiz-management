@@ -31,7 +31,9 @@ export const endpoints = {
     next_list: "/api/quiz/list",
     list: ADMIN_BASE_PATH + "/quiz/list-all",
     next_unlockRoom: "/api/quiz/lock-unlock-room",
-    unlockRoom: ADMIN_BASE_PATH + "/quiz/unlock-room",
+    unlockRoom: ADMIN_BASE_PATH + "/quiz/lock-room",
+    next_addUrl: "/api/quiz/add-url/",
+    addUrl: ADMIN_BASE_PATH + "/quiz/videoUrl",
 
     // Question creation endpoints
     next_que_create: (id) => `/api/quiz/${id}/add-question`,

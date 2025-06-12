@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useEffect, useState } from "react";
 import UrlModal from "../url-modal";
+import { paths } from "@/routes/path";
+import { useRouter } from "next/navigation";
 
 export default function ViewQuiz({ id }: { id: string }) {
   const participants = [
@@ -15,12 +17,13 @@ export default function ViewQuiz({ id }: { id: string }) {
     { id: 4, name: "User 4", avatar: "/images/user.jpg" },
     { id: 5, name: "User 5", avatar: "/images/user.jpg" },
   ];
+  const router = useRouter();
   const [quizData, setQuizData] = useState<any>({});
   const [urlModalOpen, setUrlModalOpen] = useState(false);
 
   useEffect(() => {
     onload();
-  }, []);
+  }, [id]);
   const onload = async () => {
     const quizRes = (await getQuizDetail(id)) as any;
     setQuizData(quizRes.data.data);
@@ -119,7 +122,7 @@ export default function ViewQuiz({ id }: { id: string }) {
                     Prize Pool:
                   </span>
                   <span className="text-sm text-gray-900">
-                    {quizData?.prizePool}
+                    {quizData?.quizPrice}
                   </span>
                 </div>
 
@@ -191,7 +194,13 @@ export default function ViewQuiz({ id }: { id: string }) {
         <div className="mt-6">
           <Button
             className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2"
-            onClick={() => setUrlModalOpen(true)}
+            onClick={() => {
+              if (quizData.videoUrl) {
+                router.push(`${paths.quiz_management.detail}/${id}`);
+              } else {
+                setUrlModalOpen(true);
+              }
+            }}
           >
             Start Quiz Now
           </Button>
