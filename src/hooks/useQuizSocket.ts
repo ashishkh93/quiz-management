@@ -8,7 +8,8 @@ const useQuizSocket = (
   setJoinPlayers: Dispatch<SetStateAction<number>>,
   setActivePlayers: Dispatch<SetStateAction<number>>,
   setEliminatedPlayers: Dispatch<SetStateAction<number>>,
-  setTopUsers: Dispatch<SetStateAction<any[]>>
+  setTopUsers: Dispatch<SetStateAction<any[]>>,
+  setLstQuestion: Dispatch<SetStateAction<any[]>>
 ) => {
   useEffect(() => {
     const socket = getSocket();
@@ -16,41 +17,45 @@ const useQuizSocket = (
     socket.connect();
 
     const handleConnect = () => {
-      console.log("✅ Connected to socket server:", socket.id);
+      // console.log("✅ Connected to socket server:", socket.id);
       socket.emit("quiz_detail", { quizId: quizId });
       //   socket.emit("question_list", { quizId: quizId });
     };
 
     const handleQuizDetail = (data: any) => {
-      console.log("Handle Quiz Detail:", data);
+      // console.log("Handle Quiz Detail:", data);
       setQuizData(data.data);
     };
     const handleQuestionList = (data: any) => {
       console.log("handleQuestionList: ", data);
+      setLstQuestion(data);
     };
     const handleTotalQuestion = (data: any) => {
-      console.log("Total question:", data);
+      // console.log("Total question:", data);
       setTotalQuestions(data);
     };
     const handleJoinPlayers = (data: any) => {
-      console.log("Join Players:", data);
+      // console.log("Join Players:", data);
       setJoinPlayers(data);
     };
     const handleActivePlayers = (data: any) => {
-      console.log("Active Players:", data);
+      // console.log("Active Players:", data);
       setActivePlayers(data);
     };
     const handleEliminatedPlayers = (data: any) => {
-      console.log("Eliminated Players:", data);
+      // console.log("Eliminated Players:", data);
       setEliminatedPlayers(data);
     };
     const handleTopUsers = (data: any) => {
-      console.log("Top Users:", data);
+      // console.log("Top Users:", data);
       setTopUsers(data);
     };
     const handleShowQuestion = (data: any) => {
-      console.log("Show Question:", data);
-      //   setTopUsers(data);
+      // console.log("Show Question:", data);
+    };
+
+    const handleCurrentQuestion = (data: any) => {
+      // console.log("handleCurrentQuestion:", data);
     };
     const handleError = (err: any) => {
       console.error("❌ Socket error:", err);
@@ -66,6 +71,7 @@ const useQuizSocket = (
     socket.on("eliminatedPlayers", handleEliminatedPlayers);
     socket.on("top_users", handleTopUsers);
     socket.on("show_question", handleShowQuestion);
+    socket.on("current_question", handleCurrentQuestion);
     socket.on("connect_error", handleError);
 
     // Cleanup
@@ -79,6 +85,7 @@ const useQuizSocket = (
       socket.off("eliminatedPlayers", handleEliminatedPlayers);
       socket.off("top_users", handleTopUsers);
       socket.off("show_question", handleShowQuestion);
+      socket.off("current_question", handleCurrentQuestion);
       socket.off("connect_error", handleError);
     };
   }, [quizId]);

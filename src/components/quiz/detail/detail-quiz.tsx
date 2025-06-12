@@ -9,6 +9,7 @@ import LockRoomModal from "../lock-room-modal";
 import { toast } from "sonner";
 import { getSocket } from "@/lib/socket";
 import useQuizSocket from "@/hooks/useQuizSocket";
+import QuestionCard from "../create-quiz/QuestionCard";
 
 export default function QuizDetail({ id }: { id: string }) {
   const socket = getSocket();
@@ -23,6 +24,7 @@ export default function QuizDetail({ id }: { id: string }) {
   const [activePlayers, setActivePlayers] = useState<number>(0);
   const [eliminatedPlayers, setEliminatedPlayers] = useState<number>(0);
   const [topUsers, setTopUsers] = useState<any[]>([]);
+  const [lstQuestion, setLstQuestion] = useState<any[]>([]);
   useQuizSocket(
     id,
     setQuizData,
@@ -30,7 +32,8 @@ export default function QuizDetail({ id }: { id: string }) {
     setJoinPlayers,
     setActivePlayers,
     setEliminatedPlayers,
-    setTopUsers
+    setTopUsers,
+    setLstQuestion
   );
 
   const handleAnswerSelect = (questionId: number, answer: string) => {
@@ -58,6 +61,15 @@ export default function QuizDetail({ id }: { id: string }) {
     // }
   };
 
+  const onShowAnswerClick = (questionId: string) => {
+    socket.emit("show_answer", {
+      quizId: id,
+      questionId: questionId,
+    });
+
+    console.log("onShowAnswerClick: ", id);
+  };
+  console.log("lstQuestion: ", lstQuestion);
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="p-6">
@@ -143,101 +155,16 @@ export default function QuizDetail({ id }: { id: string }) {
         <div className="flex gap-6">
           {/* Questions Section - 70% */}
           <div className="w-full lg:w-[70%] space-y-4">
-            {quizData?.questions?.length > 0 &&
-              quizData.questions.map((question: any, index: number) => {
+            {lstQuestion?.length > 0 &&
+              lstQuestion.map((question: any, index: number) => {
                 return (
-                  <Card
-                    key={question?._id}
-                    className="bg-white shadow-sm relative"
-                    onMouseEnter={() => setHoveredQuestion(question.id)}
-                    onMouseLeave={() => setHoveredQuestion(null)}
-                  >
-                    <CardContent className="p-6">
-                      <div className="flex justify-between items-start mb-4">
-                        <h3 className="text-lg font-semibold text-gray-900 flex-1 pr-4">
-                          {question.question}
-                        </h3>
-                      </div>
-
-                      {/* Answer Options */}
-                      <div className="grid grid-cols-4 gap-3 mb-6">
-                        {question.options.map((option: string) => (
-                          <button
-                            key={option}
-                            onClick={() =>
-                              handleAnswerSelect(question.id, option)
-                            }
-                            className={`p-3 text-left border rounded-lg transition-colors ${
-                              selectedAnswers[question.id] === option
-                                ? "border-green-500 bg-green-50 text-green-700"
-                                : "border-gray-200 hover:border-gray-300 hover:bg-gray-50"
-                            }`}
-                          >
-                            {option}
-                          </button>
-                        ))}
-                      </div>
-
-                      {/* Statistics and Timer */}
-                      <div className="flex justify-between items-center">
-                        <div className="grid grid-cols-4 gap-8 text-center">
-                          <div>
-                            <div className="flex items-center justify-center gap-1 text-gray-600 mb-1">
-                              <User className="w-4 h-4" />
-                              <span className="text-xs">User Live</span>
-                            </div>
-                            <p className="text-lg font-semibold">00</p>
-                          </div>
-                          <div>
-                            <div className="flex items-center justify-center gap-1 text-gray-600 mb-1">
-                              <UserX className="w-4 h-4" />
-                              <span className="text-xs">Eliminated User</span>
-                            </div>
-                            <p className="text-lg font-semibold">00</p>
-                          </div>
-                          <div>
-                            <div className="flex items-center justify-center gap-1 text-gray-600 mb-1">
-                              <Eye className="w-4 h-4" />
-                              <span className="text-xs">Viewers</span>
-                            </div>
-                            <p className="text-lg font-semibold">00</p>
-                          </div>
-                          <div>
-                            <div className="flex items-center justify-center gap-1 text-gray-600 mb-1">
-                              <MousePointer className="w-4 h-4" />
-                              <span className="text-xs">User Clicks</span>
-                            </div>
-                            <p className="text-lg font-semibold">00</p>
-                          </div>
-                        </div>
-
-                        <div className="flex items-center gap-4">
-                          <div className="flex items-center gap-2 text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
-                            <Clock className="w-4 h-4" />
-                            <span className="text-sm font-medium">
-                              {question.timer} Seconds
-                            </span>
-                          </div>
-                          <Button
-                            className="bg-green-600 hover:bg-green-700 text-white px-6"
-                            onClick={() => {
-                              onShowQuestionClick(question._id);
-                            }}
-                          >
-                            Show Question
-                          </Button>
-                        </div>
-                      </div>
-
-                      {/* Tooltip */}
-                      {/* {hoveredQuestion === question.id && (
-                      <div className="absolute top-4 right-4 bg-black text-white text-xs rounded px-2 py-1 z-10">
-                        Question {question.id} details
-                        <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-black"></div>
-                      </div>
-                    )} */}
-                    </CardContent>
-                  </Card>
+                  <QuestionCard
+                    question={question}
+                    selectedAnswers={selectedAnswers}
+                    onAnswerSelect={handleAnswerSelect}
+                    onShowQuestionClick={onShowQuestionClick}
+                    onShowAnswerClick={onShowAnswerClick}
+                  />
                 );
               })}
           </div>
@@ -274,48 +201,20 @@ export default function QuizDetail({ id }: { id: string }) {
                       Announcement
                     </h3>
                   </div>
-                  <p>
-                    <strong className="text-gray-900">
-                      Quiz Time! Test Your Knowledge and Win Prizes!
-                    </strong>
-                  </p>
-                  <p>
-                    Join our exciting community quiz and challenge your brain!
-                    Answer fun and engaging questions across topics like general
-                    knowledge, current events, and local trivia. Top scorers
-                    will win awesome rewards and earn bragging rights in the
-                    community.
-                  </p>
-                  <p>
-                    <strong className="text-gray-900">
-                      Quiz Time! Test Your Knowledge and Win Prizes!
-                    </strong>
-                  </p>
-                  <p>
-                    Join our exciting community quiz and challenge your brain!
-                    Answer fun and engaging questions across topics like general
-                    knowledge, current events, and local trivia. Top scorers
-                    will win awesome rewards and earn bragging rights in the
-                    community.
-                  </p>
-                  <p>
-                    <strong className="text-gray-900">Important Rules:</strong>
-                  </p>
-                  <ul className="list-disc list-inside space-y-1 text-xs">
-                    <li>Each question has a time limit</li>
-                    <li>Points are awarded based on speed and accuracy</li>
-                    <li>No cheating or external help allowed</li>
-                    <li>Winners will be announced at the end</li>
-                  </ul>
-                  <p>
-                    <strong className="text-gray-900">Prizes Include:</strong>
-                  </p>
-                  <ul className="list-disc list-inside space-y-1 text-xs">
-                    <li>1st Place: RM 500 + Trophy</li>
-                    <li>2nd Place: RM 300 + Certificate</li>
-                    <li>3rd Place: RM 200 + Certificate</li>
-                    <li>Participation certificates for all</li>
-                  </ul>
+                  {quizData?.AnnouncementQuiz?.length > 0
+                    ? quizData?.AnnouncementQuiz.map((obj: any) => {
+                        return (
+                          <div>
+                            <p>
+                              <strong className="text-gray-900">
+                                {obj?.title}
+                              </strong>
+                            </p>
+                            <p>{obj?.description}</p>
+                          </div>
+                        );
+                      })
+                    : "Not found"}
                 </CardContent>
               </Card>
             </div>
