@@ -62,28 +62,28 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                 <User className="w-4 h-4" />
                 <span className="text-xs">User Live</span>
               </div>
-              <p className="text-lg font-semibold">00</p>
+              <p className="text-lg font-semibold">{question?.userLive}</p>
             </div>
             <div>
               <div className="flex items-center justify-center gap-1 text-gray-600 mb-1">
                 <UserX className="w-4 h-4" />
                 <span className="text-xs">Eliminated User</span>
               </div>
-              <p className="text-lg font-semibold">00</p>
+              <p className="text-lg font-semibold">{question?.eliminated}</p>
             </div>
             <div>
               <div className="flex items-center justify-center gap-1 text-gray-600 mb-1">
                 <Eye className="w-4 h-4" />
                 <span className="text-xs">Viewers</span>
               </div>
-              <p className="text-lg font-semibold">00</p>
+              <p className="text-lg font-semibold">{question?.viewer}</p>
             </div>
             <div>
               <div className="flex items-center justify-center gap-1 text-gray-600 mb-1">
                 <MousePointer className="w-4 h-4" />
                 <span className="text-xs">User Clicks</span>
               </div>
-              <p className="text-lg font-semibold">00</p>
+              <p className="text-lg font-semibold">{question?.click}</p>
             </div>
           </div>
 

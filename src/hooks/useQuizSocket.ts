@@ -9,7 +9,8 @@ const useQuizSocket = (
   setActivePlayers: Dispatch<SetStateAction<number>>,
   setEliminatedPlayers: Dispatch<SetStateAction<number>>,
   setTopUsers: Dispatch<SetStateAction<any[]>>,
-  setLstQuestion: Dispatch<SetStateAction<any[]>>
+  setLstQuestion: Dispatch<SetStateAction<any[]>>,
+  setWinnerList: Dispatch<SetStateAction<any[]>>
 ) => {
   useEffect(() => {
     const socket = getSocket();
@@ -57,6 +58,10 @@ const useQuizSocket = (
     const handleCurrentQuestion = (data: any) => {
       // console.log("handleCurrentQuestion:", data);
     };
+    const handleComplete = (data: any) => {
+      console.log("handleComplete:", data);
+      setWinnerList(data.participants);
+    };
     const handleError = (err: any) => {
       console.error("❌ Socket error:", err);
     };
@@ -72,6 +77,7 @@ const useQuizSocket = (
     socket.on("top_users", handleTopUsers);
     socket.on("show_question", handleShowQuestion);
     socket.on("current_question", handleCurrentQuestion);
+    socket.on("complete_quiz", handleComplete);
     socket.on("connect_error", handleError);
 
     // Cleanup
@@ -86,6 +92,7 @@ const useQuizSocket = (
       socket.off("top_users", handleTopUsers);
       socket.off("show_question", handleShowQuestion);
       socket.off("current_question", handleCurrentQuestion);
+      socket.off("complete_quiz", handleComplete);
       socket.off("connect_error", handleError);
     };
   }, [quizId]);

@@ -1,21 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Clock, Eye, MousePointer, UserX, User } from "lucide-react";
-import { getQuizDetail, showQuestion } from "@/api-service/quiz.service";
 import LockRoomModal from "../lock-room-modal";
-import { toast } from "sonner";
 import { getSocket } from "@/lib/socket";
 import useQuizSocket from "@/hooks/useQuizSocket";
 import QuestionCard from "../create-quiz/QuestionCard";
 import { useRouter } from "next/navigation";
 import { paths } from "@/routes/path";
+import WinnerPopup from "../create-quiz/winner-popup";
 
 export default function QuizDetail({ id }: { id: string }) {
   const socket = getSocket();
-  const [hoveredQuestion, setHoveredQuestion] = useState<number | null>(null);
   const [selectedAnswers, setSelectedAnswers] = useState<{
     [key: number]: string;
   }>({});
@@ -25,6 +22,7 @@ export default function QuizDetail({ id }: { id: string }) {
   const [joinPlayers, setJoinPlayers] = useState<number>(0);
   const [activePlayers, setActivePlayers] = useState<number>(0);
   const [eliminatedPlayers, setEliminatedPlayers] = useState<number>(0);
+  const [winnerList, setWinnerList] = useState<any[]>([]);
   const [topUsers, setTopUsers] = useState<any[]>([]);
   const [lstQuestion, setLstQuestion] = useState<any[]>([]);
 
@@ -38,7 +36,8 @@ export default function QuizDetail({ id }: { id: string }) {
     setActivePlayers,
     setEliminatedPlayers,
     setTopUsers,
-    setLstQuestion
+    setLstQuestion,
+    setWinnerList
   );
 
   const handleAnswerSelect = (questionId: number, answer: string) => {
@@ -74,7 +73,13 @@ export default function QuizDetail({ id }: { id: string }) {
 
     console.log("onShowAnswerClick: ", id);
   };
-  console.log("lstQuestion: ", lstQuestion);
+
+  const onCompleteQuiz = () => {
+    socket.emit("complete_quiz", {
+      quizId: id,
+    });
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="p-6">
@@ -187,20 +192,26 @@ export default function QuizDetail({ id }: { id: string }) {
                   <div className="flex items-center gap-4 pb-3 overflow-x-auto">
                     {/* Question Number Indicators */}
                     <div className="flex gap-1">
-                      {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
-                        <div
-                          key={num}
-                          className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-medium ${
-                            num === 5
-                              ? "bg-green-500 text-white"
-                              : num < 5
-                              ? "bg-gray-300 text-gray-700"
-                              : "bg-gray-100 text-gray-400"
-                          }`}
-                        >
-                          {num}
-                        </div>
-                      ))}
+                      {Array.from(
+                        { length: lstQuestion?.length || 0 },
+                        (_, index) => {
+                          const num = index + 1;
+                          return (
+                            <div
+                              key={num}
+                              className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-medium ${
+                                num === 5
+                                  ? "bg-green-500 text-white"
+                                  : num < 5
+                                  ? "bg-gray-300 text-gray-700"
+                                  : "bg-gray-100 text-gray-400"
+                              }`}
+                            >
+                              {num}
+                            </div>
+                          );
+                        }
+                      )}
                     </div>
                   </div>
                 </CardHeader>
@@ -230,6 +241,15 @@ export default function QuizDetail({ id }: { id: string }) {
             </div>
           </div>
         </div>
+
+        <WinnerPopup winnerList={winnerList}>
+          <Button
+            className="bg-blue-600 hover:bg-blue-700 text-white px-6 mt-5"
+            onClick={() => onCompleteQuiz()}
+          >
+            Complete quiz
+          </Button>
+        </WinnerPopup>
       </div>
       <LockRoomModal
         open={lockRoomModalOpen}
