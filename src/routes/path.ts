@@ -16,5 +16,6 @@ export const paths = {
     schedule: (id: string) => `/quiz-management/${id}/schedule`,
     view: "/quiz-management/view",
     detail: "/quiz-management/detail",
+    add_question: (id: string) => `/quiz-management/${id}/add-question`,
   },
 };

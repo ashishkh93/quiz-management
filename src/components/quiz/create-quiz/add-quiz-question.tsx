@@ -4,6 +4,8 @@ import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { getQuizDetail } from "@/api-service/quiz.service";
 import AddQuizQuestions from "./add-quiz-questions";
+import { useBoolean } from "@/hooks/useBoolean";
+import AddQuestionsSkeleton from "@/components/shared/skeleton/add-questions-skeleton";
 
 type EditQuizProps = {
   quizId: string;
@@ -12,11 +14,14 @@ type EditQuizProps = {
 const AddQuizQuestion = ({ quizId }: EditQuizProps) => {
   const [quizData, setQuizData] = useState<ExtendedQuizFormValues>({});
 
+  const loadingBool = useBoolean();
+
   useEffect(() => {
     onload();
   }, []);
 
   const onload = async () => {
+    loadingBool.onTrue();
     const quizRes = (await getQuizDetail(quizId)) as IQuizDetailApiRes;
 
     if (!quizRes.status) {
@@ -24,9 +29,14 @@ const AddQuizQuestion = ({ quizId }: EditQuizProps) => {
     }
 
     setQuizData(quizRes.data?.data);
+    loadingBool.onFalse();
   };
 
-  return <AddQuizQuestions quizData={quizData} quizId={quizId} />;
+  return loadingBool.bool ? (
+    <AddQuestionsSkeleton />
+  ) : (
+    <AddQuizQuestions quizData={quizData} quizId={quizId} />
+  );
 };
 
 export default AddQuizQuestion;

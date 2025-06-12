@@ -26,6 +26,8 @@ export const endpoints = {
   quiz: {
     next_create: "/api/quiz/create",
     create: ADMIN_BASE_PATH + "/quiz/create",
+    next_edit: (id) => `/api/quiz/${id}/edit`,
+    edit: (id) => ADMIN_BASE_PATH + `/quiz/update/${id}`,
     next_detail: "/api/quiz/detail",
     detail: ADMIN_BASE_PATH + "/quiz/detail",
     next_list: "/api/quiz/list",
@@ -43,7 +45,7 @@ export const endpoints = {
     next_announcement_create: "/api/quiz/add-announcement",
     announcement_create: ADMIN_BASE_PATH + "/quiz/add-announcement",
     next_show_question: "/api/quiz/show-question",
-    show_question: ADMIN_BASE_PATH + "/quiz/question"
+    show_question: ADMIN_BASE_PATH + "/quiz/question",
   },
   moderator: {
     next_create: "/api/moderator/create",

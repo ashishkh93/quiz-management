@@ -11,6 +11,9 @@ import { Input } from "../ui/input";
 import AssignModeratorPopup from "./create-quiz/assign-moderator-popup";
 import moment from "moment";
 import { currentDateToUTC } from "@/lib/utils";
+import { useBoolean } from "@/hooks/useBoolean";
+import DashboardSkeleton from "../shared/skeleton/dashboard-skeleton";
+import NoDataFound from "../shared/not-found/no-data-found";
 
 const QuizComponent = () => {
   const router = useRouter();
@@ -18,11 +21,14 @@ const QuizComponent = () => {
   const [quizHistoryData, setQuizHistoryData] = useState<any>([]);
   const [searchTerm, setSearchTerm] = useState("");
 
+  const loadingBool = useBoolean(true);
+
   useEffect(() => {
     onload();
   }, [searchTerm]);
 
   const onload = async () => {
+    loadingBool.onTrue();
     const quizRes = (await getQuizList({
       search: searchTerm,
       date: currentDateToUTC(),
@@ -30,9 +36,12 @@ const QuizComponent = () => {
 
     setQuizListData(quizRes?.data?.upcoming);
     setQuizHistoryData(quizRes?.data?.history);
+    loadingBool.onFalse();
   };
 
-  return (
+  return loadingBool.bool ? (
+    <DashboardSkeleton />
+  ) : (
     <div className="flex flex-col flex-[0_0_auto] space-y-4 my-4">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-2 md:gap-0">
         <Typography size="lg" className="text-start">
@@ -58,24 +67,30 @@ const QuizComponent = () => {
         </div>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6 mb-10">
-        {quizListData?.length > 0 &&
+        {quizListData?.length > 0 ? (
           quizListData.map((data: any, index: number) => (
             <Fragment key={index}>
               <QuizDetailCard data={data} />
             </Fragment>
-          ))}
+          ))
+        ) : (
+          <NoDataFound description="No Upcoming quiz available." />
+        )}
       </div>
       <div className="space-y-4">
         <Typography size="lg" className="text-start">
           Quiz History
         </Typography>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
-          {quizHistoryData?.length > 0 &&
+          {quizHistoryData?.length > 0 ? (
             quizHistoryData.map((data: any, index: number) => (
               <Fragment key={index}>
                 <QuizDetailCard data={data} />
               </Fragment>
-            ))}
+            ))
+          ) : (
+            <NoDataFound description="No quiz history available." />
+          )}
         </div>
       </div>
     </div>

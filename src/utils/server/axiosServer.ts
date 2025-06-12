@@ -25,8 +25,6 @@ export async function createAuthenticatedAxios() {
   instance.interceptors.response.use(
     (res) => res,
     (err) => {
-      console.log(typeof err?.response?.data, 'typeof err?.response?.data');
-      
       let msgObj =
         typeof err?.response?.data === "string"
           ? { message: err?.response?.data }
