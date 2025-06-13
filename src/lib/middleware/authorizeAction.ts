@@ -1,10 +1,18 @@
+// @ts-nocheck
+
 import { NextRequest, NextResponse } from "next/server";
 import { getCookie } from "../../utils/server/server-util";
 import { createAuthenticatedAxios } from "../../utils/server/axiosServer";
 import { verifyJwt } from "@/auth/context/jwt/utils";
 
 export const authorizeAction = (handler: HandlerFn) => {
-  return async (req: NextRequest): Promise<NextResponse> => {
+  return async (
+    req: NextRequest,
+    ctx: Promise<{ params: Promise<any> }>
+  ): Promise<NextResponse> => {
+    const resolvedCtx = await ctx;
+    const paramsFromReq = await resolvedCtx.params;
+
     const authObj = await getCookie();
 
     if (!authObj) {
@@ -46,6 +54,7 @@ export const authorizeAction = (handler: HandlerFn) => {
     }
 
     const extendedContext: HandlerContext = {
+      ...(paramsFromReq ? paramsFromReq : {}),
       token: decoded?.token ?? "",
       user: decoded,
       form,
