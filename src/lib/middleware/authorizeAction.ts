@@ -8,7 +8,7 @@ import { verifyJwt } from "@/auth/context/jwt/utils";
 export const authorizeAction = (handler: HandlerFn) => {
   return async (
     req: NextRequest,
-    ctx: Promise<{ params: Promise<any> }>
+    ctx: { params: Record<string, string> }
   ): Promise<NextResponse> => {
     const resolvedCtx = await ctx;
     const paramsFromReq = await resolvedCtx.params;
