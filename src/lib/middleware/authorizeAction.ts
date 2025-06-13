@@ -16,12 +16,12 @@ export const authorizeAction = (handler: HandlerFn) => {
 
     let decoded = verifyJwt(authObj.token ?? "") as CustomJwtPayload;
 
-    // if (decoded?.error) {
-    //   return NextResponse.json(
-    //     { message: decoded?.error || "Invalid or expired token" },
-    //     { status: 401 }
-    //   );
-    // }
+    if (decoded?.error) {
+      return NextResponse.json(
+        { message: decoded?.error || "Invalid or expired token" },
+        { status: 401 }
+      );
+    }
 
     let form = {};
     const contentType = req.headers.get("Content-Type") || "";

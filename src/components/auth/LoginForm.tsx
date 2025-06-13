@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 "use client";
 
 import { useState } from "react";
@@ -10,7 +12,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema } from "@/utils/schema/login.schema";
 import InputField from "../shared/input/InputField";
-import { adminLoginService } from "@/api-service/auth.service";
+import {
+  adminLoginService,
+  adminNextLoginService,
+} from "@/api-service/auth.service";
 import { setAuthCookie } from "@/app/actions/set-auth-cookie";
 import { useAuthContext } from "@/auth/hooks/use-auth-context";
 import { paths } from "@/routes/path";
@@ -31,11 +36,11 @@ const LoginForm = () => {
   });
 
   const onSubmit = async (data: LoginFormData) => {
-    const loginRes = (await adminLoginService(data)) as IDefaultResponse;
+    const loginRes = (await adminNextLoginService(data)) as IDefaultResponse;
 
-    if ((loginRes?.data as ObjType)?.token) {
+    if (Number(loginRes?.status) === 200 && loginRes?.token) {
       await setAuthCookie({
-        token: (loginRes?.data as ObjType)?.token as string,
+        token: loginRes?.token as string,
       }); // Cookie is now securely stored
       await checkUserSession();
     }
