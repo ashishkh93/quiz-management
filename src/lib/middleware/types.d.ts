@@ -37,4 +37,8 @@ declare global {
     refreshToken?: string;
     [key: string]: any;
   };
+
+  type AppRouteHandlerContext = {
+    params: Record<string, string | string[]>;
+  };
 }
