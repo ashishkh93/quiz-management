@@ -9,7 +9,7 @@ import { RouteModuleHandleContext } from "next/dist/server/route-modules/route-m
 export const authorizeAction = (handler: HandlerFn) => {
   return async (
     req: NextRequest,
-    ctx: RouteModuleHandleContext
+    ctx: Promise<any>
   ): Promise<NextResponse> => {
     const resolvedCtx = await ctx;
     const paramsFromReq = await resolvedCtx.params;
