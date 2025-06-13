@@ -1,5 +1,11 @@
 import { GuestGuard } from "@/auth/context/guard/guest-guard";
+import { SplashScreen } from "@/components/loading-screen";
+import { Suspense } from "react";
 
 export default function Layout({ children }: IChildren) {
-  return <GuestGuard>{children}</GuestGuard>;
+  return (
+    <Suspense fallback={<SplashScreen />}>
+      <GuestGuard>{children}</GuestGuard>
+    </Suspense>
+  );
 }

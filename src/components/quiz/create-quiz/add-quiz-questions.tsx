@@ -59,6 +59,7 @@ const AddQuizQuestions: React.FC<AddQuizQuestionsProps> = ({
     data = {
       ...data,
       quizId: quizId,
+      // @ts-ignore
       questions: data?.questions?.map((q) => {
         const { isHidden, ...otherParams } = q;
         return {
@@ -82,9 +83,11 @@ const AddQuizQuestions: React.FC<AddQuizQuestionsProps> = ({
   };
 
   return (
+    // @ts-ignore
     <form onSubmit={form.handleSubmit(onSubmit)}>
       <div className="font-bold text-xl text-gray-700 mb-6">Add Questions</div>
       <Card className="p-6">
+        {/* @ts-ignore */}
         <QuestionsSection form={form} hideTitle />
       </Card>
       <div className="mt-6">

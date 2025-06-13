@@ -4,11 +4,7 @@ import { createAuthenticatedAxios } from "../../utils/server/axiosServer";
 import { verifyJwt } from "@/auth/context/jwt/utils";
 
 export const authorizeAction = (handler: HandlerFn) => {
-  return async (
-    req: NextRequest,
-    context: Record<string, any>,
-    ...args: any[]
-  ): Promise<NextResponse> => {
+  return async (req: NextRequest): Promise<NextResponse> => {
     const authObj = await getCookie();
 
     if (!authObj) {
@@ -50,13 +46,12 @@ export const authorizeAction = (handler: HandlerFn) => {
     }
 
     const extendedContext: HandlerContext = {
-      ...context,
       token: decoded?.token ?? "",
       user: decoded,
       form,
     };
 
-    return handler(req, extendedContext, ...args);
+    return handler(req, extendedContext);
   };
 };
 

@@ -63,13 +63,17 @@ const EditQuiz = ({ quizId }: EditQuizProps) => {
         <span>Back</span>
       </button>
       <QuizForm
-        defaultQuizFormValues={{
-          ...quizData,
-          date: quizData.scheduledDate ?? "",
-          image: quizData.image
-            ? `${process.env.NEXT_PUBLIC_SERVER_URL_IMAGE}/${quizData.image}`
-            : "",
-        }}
+        defaultQuizFormValues={
+          quizData
+            ? {
+                ...quizData,
+                date: quizData?.scheduledDate ?? "",
+                image: quizData?.image
+                  ? `${process.env.NEXT_PUBLIC_SERVER_URL_IMAGE}/${quizData?.image}`
+                  : "",
+              }
+            : {}
+        }
         editQuizHandler={editQuizHandler}
       />
     </>

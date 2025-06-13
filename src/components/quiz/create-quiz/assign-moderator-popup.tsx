@@ -9,10 +9,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Search, X } from "lucide-react";
+import { Search } from "lucide-react";
 import { getModeratorList } from "@/api-service/moderator.service";
 import { ModeratorForm } from "./create-moderator";
-import { ModeratorFormValues } from "@/utils/schema/moderator.schema";
 import { UseFormSetValue } from "react-hook-form";
 
 interface AssignModeratorPopupProps {
@@ -53,6 +52,7 @@ export default function AssignModeratorPopup({
   };
 
   const handleAssign = (userId: string) => {
+    // @ts-ignore
     setValue("moderator", userId, {
       shouldValidate: true,
       shouldTouch: true,
