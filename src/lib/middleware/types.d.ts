@@ -39,6 +39,6 @@ declare global {
   };
 
   type AppRouteHandlerContext = {
-    params: Record<string, Promise<any>>;
+    params: Record<string, undefined | Promise<any>>;
   };
 }
