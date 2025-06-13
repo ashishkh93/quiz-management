@@ -18,11 +18,7 @@ const QuizDetailCard = ({ data }: any) => {
         <div className="relative h-40 overflow-hidden rounded-t-xl">
           <div className="-mt-6 -mb-6 h-[calc(100%+3rem)] w-full">
             <img
-              src={
-                data?.image
-                  ? process.env.NEXT_PUBLIC_SERVER_URL_IMAGE + data.image
-                  : "/images/quiz-bg.png"
-              }
+              src={data?.image || "/images/quiz-bg.png"}
               alt="Quiz Banner"
               className="w-full h-full object-cover"
             />
