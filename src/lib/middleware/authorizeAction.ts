@@ -5,7 +5,6 @@ import { getCookie } from "../../utils/server/server-util";
 import { createAuthenticatedAxios } from "../../utils/server/axiosServer";
 import { verifyJwt } from "@/auth/context/jwt/utils";
 
-
 export const authorizeAction = (handler: HandlerFn) => {
   return async (
     req: NextRequest,

@@ -39,6 +39,6 @@ declare global {
   };
 
   type AppRouteHandlerContext = {
-    params: Record<string, string | string[]>;
+    params: Record<string, any>;
   };
 }
