@@ -10,6 +10,7 @@ import QuestionCard from "../create-quiz/QuestionCard";
 import { useRouter } from "next/navigation";
 import { paths } from "@/routes/path";
 import WinnerPopup from "../create-quiz/winner-popup";
+import GradientTitle from "@/components/shared/gradient/gradient-title";
 
 export default function QuizDetail({ id }: { id: string }) {
   const socket = getSocket();
@@ -82,10 +83,10 @@ export default function QuizDetail({ id }: { id: string }) {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="p-6">
+      <div className="p-3">
         {/* Header */}
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-gray-900">Quiz Details</h1>
+        <div className="flex justify-between items-center mb-4">
+          <h1 className="text-lg font-bold text-gray-900">Quiz Details</h1>
           <div className="flex gap-3">
             <Button
               className="bg-green-600 hover:bg-green-700 text-white px-6 cursor-pointer"
@@ -106,16 +107,23 @@ export default function QuizDetail({ id }: { id: string }) {
 
         {/* Quiz Overview - Full Width */}
         <Card className="bg-white shadow-sm mb-6 w-full">
-          <CardHeader className="pb-3">
-            <div className="flex justify-between items-center">
-              <h2 className="text-lg font-semibold text-gray-900">
+          <div className="flex justify-between items-center mx-2">
+            <div className="relative w-full bg-[#f1f6fa] rounded-[5px]">
+              <img
+                src={"/images/QuizOverviewStrip.svg"}
+                alt={"QuizOverviewStrip"}
+                className="h-5 absolute left-0 top-1.5"
+              />
+              {/* QuizOverviewStrip */}
+              <div className="text-md font-semibold text-gray-900 p-1 ml-3">
                 Quiz Overview
-              </h2>
-              {/* <span className="text-sm text-gray-600">Jenny Alexander</span> */}
+              </div>
             </div>
-          </CardHeader>
+          </div>
+          {/* <CardHeader className="">
+          </CardHeader> */}
           <CardContent>
-            <div className="grid grid-cols-7 gap-6 text-sm mb-4">
+            <div className="grid grid-cols-7 gap-3 text-xs mb-4">
               <div>
                 <p className="text-gray-600 mb-1">Quiz Title:</p>
                 <p className="font-medium">{quizData?.title}</p>
@@ -141,7 +149,7 @@ export default function QuizDetail({ id }: { id: string }) {
                 <p className="font-medium">{eliminatedPlayers}</p>
               </div>
               <div>
-                <p className="text-gray-600 text-sm mb-1">Top 5 Players:</p>
+                <p className="text-gray-600 mb-1">Top 5 Players:</p>
                 <div className="flex -space-x-2">
                   {topUsers.length
                     ? topUsers.map((player) => (
@@ -188,55 +196,63 @@ export default function QuizDetail({ id }: { id: string }) {
           <div className="w-full lg:w-[30%]">
             <div className="sticky top-6">
               <Card className="bg-white shadow-sm">
-                <CardHeader className="">
-                  <div className="flex items-center gap-4 pb-3 overflow-x-auto">
-                    {/* Question Number Indicators */}
-                    <div className="flex gap-1">
-                      {Array.from(
-                        { length: lstQuestion?.length || 0 },
-                        (_, index) => {
-                          const num = index + 1;
-                          return (
-                            <div
-                              key={num}
-                              className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-medium ${
-                                num === 5
-                                  ? "bg-green-500 text-white"
-                                  : num < 5
-                                  ? "bg-gray-300 text-gray-700"
-                                  : "bg-gray-100 text-gray-400"
-                              }`}
-                            >
-                              {num}
-                            </div>
-                          );
-                        }
-                      )}
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent className="text-sm text-gray-600 space-y-4 max-h-[calc(100vh-200px)] overflow-y-auto">
-                  <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                    <h3 className="font-semibold text-gray-900">
-                      Announcement
-                    </h3>
-                  </div>
-                  {quizData?.AnnouncementQuiz?.length > 0
-                    ? quizData?.AnnouncementQuiz.map((obj: any) => {
+                {/* <CardHeader className=""> */}
+                <div className="flex items-center gap-4 overflow-x-auto p-3">
+                  {/* Question Number Indicators */}
+                  <div className="flex gap-1">
+                    {Array.from(
+                      { length: lstQuestion?.length || 0 },
+                      (_, index) => {
+                        const num = index + 1;
                         return (
-                          <div>
-                            <p>
-                              <strong className="text-gray-900">
-                                {obj?.title}
-                              </strong>
-                            </p>
-                            <p>{obj?.description}</p>
+                          <div
+                            key={num}
+                            className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-medium ${
+                              num === 5
+                                ? "bg-green-500 text-white"
+                                : num < 5
+                                ? "bg-gray-300 text-gray-700"
+                                : "bg-gray-100 text-gray-400"
+                            }`}
+                          >
+                            {num}
                           </div>
                         );
-                      })
-                    : "Not found"}
-                </CardContent>
+                      }
+                    )}
+                  </div>
+                </div>
+                {/* </CardHeader> */}
+                <div className="text-sm text-gray-600 space-y-4 max-h-[calc(100vh-200px)] overflow-y-auto">
+                  <div className="flex items-center gap-2">
+                    <div className="relative bg-[linear-gradient(to_left,_rgba(60,155,54,0)_0%,_rgba(60,155,54,1)_400%)] px-6 flex items-center h-full">
+                      <img
+                        src={"/images/QuizOverviewStrip.svg"}
+                        alt={"QuizOverviewStrip"}
+                        className="h-5 absolute left-0 top-1"
+                      />
+                      <h1 className="text-[18px] font-medium text-black">
+                        {"Announcement"}
+                      </h1>
+                    </div>
+                  </div>
+                  <div className="px-3 py-1">
+                    {quizData?.AnnouncementQuiz?.length > 0
+                      ? quizData?.AnnouncementQuiz.map((obj: any) => {
+                          return (
+                            <div className="bg-[#f5f5f5] p-3 mb-3 rounded-lg">
+                              <p>
+                                <strong className="text-gray-900 text-sm">
+                                  {obj?.title}
+                                </strong>
+                              </p>
+                              <p className="text-xs mt-1">{obj?.description}</p>
+                            </div>
+                          );
+                        })
+                      : "Not found"}
+                  </div>
+                </div>
               </Card>
             </div>
           </div>
