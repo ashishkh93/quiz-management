@@ -20,11 +20,9 @@ export const endpoints = {
   auth: {
     next_login: "/api/auth/login",
     login: ADMIN_BASE_PATH + "/login",
-
-    // next_order_list: (id) => `/api/customers/${id}/orders/`,
-    // order_list: (id) => `/orders/customer/${id}`,
   },
   quiz: {
+    next_create: "/api/quiz/create",
     create: ADMIN_BASE_PATH + "/quiz/create",
     next_edit: (id) => `/api/quiz/${id}/edit`,
     edit: (id) => ADMIN_BASE_PATH + `/quiz/update/${id}`,
