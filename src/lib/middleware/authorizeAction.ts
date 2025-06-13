@@ -7,10 +7,7 @@ import { verifyJwt } from "@/auth/context/jwt/utils";
 import { RouteModuleHandleContext } from "next/dist/server/route-modules/route-module";
 
 export const authorizeAction = (handler: HandlerFn) => {
-  return async (
-    req: NextRequest,
-    ctx: Promise<any>
-  ): Promise<NextResponse> => {
+  return async (req: NextRequest, ctx): Promise<NextResponse> => {
     const resolvedCtx = await ctx;
     const paramsFromReq = await resolvedCtx.params;
 
