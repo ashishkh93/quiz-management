@@ -4,11 +4,12 @@ import { NextRequest, NextResponse } from "next/server";
 import { getCookie } from "../../utils/server/server-util";
 import { createAuthenticatedAxios } from "../../utils/server/axiosServer";
 import { verifyJwt } from "@/auth/context/jwt/utils";
+import { RouteModuleHandleContext } from "next/dist/server/route-modules/route-module";
 
 export const authorizeAction = (handler: HandlerFn) => {
   return async (
     req: NextRequest,
-    ctx: AppRouteHandlerContext
+    ctx: RouteModuleHandleContext
   ): Promise<NextResponse> => {
     const resolvedCtx = await ctx;
     const paramsFromReq = await resolvedCtx.params;
