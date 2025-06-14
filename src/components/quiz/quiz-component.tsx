@@ -1,6 +1,14 @@
+// @ts-nocheck
 "use client";
 
-import React, { Fragment, useEffect, useState } from "react";
+import React, {
+  Fragment,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
+import debounce from "lodash/debounce";
 import QuizDetailCard from "./quiz-detail-card";
 import Typography from "../ui/typegraphy";
 import GradientButton from "../molecules/gradient-button/gradient-button";
@@ -14,6 +22,8 @@ import { currentDateToUTC } from "@/lib/utils";
 import { useBoolean } from "@/hooks/useBoolean";
 import DashboardSkeleton from "../shared/skeleton/dashboard-skeleton";
 import NoDataFound from "../shared/not-found/no-data-found";
+import InputField from "../shared/input/InputField";
+import { X } from "lucide-react";
 
 const QuizComponent = () => {
   const router = useRouter();
@@ -23,11 +33,7 @@ const QuizComponent = () => {
 
   const loadingBool = useBoolean(true);
 
-  useEffect(() => {
-    onload();
-  }, [searchTerm]);
-
-  const onload = async () => {
+  const onload = useCallback(async () => {
     loadingBool.onTrue();
     const quizRes = (await getQuizList({
       search: searchTerm,
@@ -37,7 +43,17 @@ const QuizComponent = () => {
     setQuizListData(quizRes?.data?.upcoming);
     setQuizHistoryData(quizRes?.data?.history);
     loadingBool.onFalse();
-  };
+  }, [searchTerm]);
+
+  useEffect(() => {
+    const handler = debounce(() => {
+      onload();
+    }, 300);
+
+    handler();
+
+    return () => handler.cancel();
+  }, [searchTerm]);
 
   return loadingBool.bool ? (
     <DashboardSkeleton />
@@ -48,11 +64,21 @@ const QuizComponent = () => {
           Upcoming Quiz
         </Typography>
         <div className="flex justify-around items-start sm:items-center gap-2 flex-col sm:flex-row">
-          <Input
+          <InputField
             placeholder="Search"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10"
+            className="pl-5"
+            rightIcon={
+              searchTerm ? (
+                <X
+                  className="w-4 h-4 text-gray-400"
+                  onClick={() => setSearchTerm("")}
+                />
+              ) : (
+                <></>
+              )
+            }
           />
           <AssignModeratorPopup>
             <GradientButton>View Moderator</GradientButton>

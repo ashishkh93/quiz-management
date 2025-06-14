@@ -25,10 +25,9 @@ export function QuizDetails({ form }: QuizDetailsProps) {
 
   return (
     <div className="bg-white rounded-lg border border-gray-200">
-      {/* <h3 className="font-medium text-gray-700 mb-6">Quiz Details</h3> */}
       <GradientTitle title="Quiz Details" />
 
-      <div className="p-6">
+      <div className="p-6 !h-[calc(100dvh-250px)] overflow-auto">
         <div className="mb-6">
           <ImageDropzone
             value={form.watch()?.image}

@@ -19,12 +19,15 @@ import {
 import { setAuthCookie } from "@/app/actions/set-auth-cookie";
 import { useAuthContext } from "@/auth/hooks/use-auth-context";
 import { paths } from "@/routes/path";
+import GradientButton from "../molecules/gradient-button/gradient-button";
+import { useBoolean } from "@/hooks/useBoolean";
 
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const router = useRouter();
 
   const { checkUserSession } = useAuthContext();
+  const loadingBool = useBoolean();
 
   const {
     register,
@@ -36,6 +39,7 @@ const LoginForm = () => {
   });
 
   const onSubmit = async (data: LoginFormData) => {
+    loadingBool.onTrue();
     const loginRes = (await adminNextLoginService(data)) as IDefaultResponse;
 
     if (Number(loginRes?.status) === 200 && loginRes?.token) {
@@ -50,6 +54,7 @@ const LoginForm = () => {
     } else {
       toast.error(loginRes?.message);
     }
+    loadingBool.onFalse();
   };
 
   return (
@@ -105,9 +110,14 @@ const LoginForm = () => {
           </div>
 
           {/* Sign In button */}
-          <Button className="w-full sm:w-[298px] md:w-[200px] lg::w-1/2 h-[54px] rounded-xl bg-gradient-to-r from-[#71D561] to-[#00A32E] shadow-10 font-bold text-lg mt-8 cursor-pointer">
+          <GradientButton
+            fromGradient="from-[#71D561]"
+            toGradient="to-[#00A32E]"
+            className="w-full sm:w-[298px] md:w-[200px] h-[54px] text-lg font-bold shadow-10 rounded-xl"
+            loading={loadingBool.bool}
+          >
             Sign In
-          </Button>
+          </GradientButton>
         </div>
       </div>
     </form>
