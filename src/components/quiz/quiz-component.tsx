@@ -81,11 +81,14 @@ const QuizComponent = () => {
             }
           />
           <AssignModeratorPopup>
-            <GradientButton>View Moderator</GradientButton>
+            <GradientButton
+              fromGradient="from-[#71D561]"
+              toGradient="to-[#00A32E]"
+            >
+              View Moderator
+            </GradientButton>
           </AssignModeratorPopup>
           <GradientButton
-            fromGradient="from-[#0E76BC]"
-            toGradient="to-[#283891]"
             onClick={() => router.push(paths.quiz_management.create)}
           >
             Create Quiz

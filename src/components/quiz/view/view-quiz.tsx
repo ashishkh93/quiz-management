@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import UrlModal from "../url-modal";
 import { paths } from "@/routes/path";
 import { useRouter } from "next/navigation";
+import GradientButton from "@/components/molecules/gradient-button/gradient-button";
 
 export default function ViewQuiz({ id }: { id: string }) {
   const participants = [
@@ -24,6 +25,7 @@ export default function ViewQuiz({ id }: { id: string }) {
   useEffect(() => {
     onload();
   }, [id]);
+
   const onload = async () => {
     const quizRes = (await getQuizDetail(id)) as any;
     setQuizData(quizRes.data.data);
@@ -192,8 +194,9 @@ export default function ViewQuiz({ id }: { id: string }) {
 
         {/* Start Quiz Button */}
         <div className="mt-6">
-          <Button
-            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2"
+          <GradientButton
+            type="button"
+            className="text-white px-6 py-2"
             onClick={() => {
               if (quizData.videoUrl) {
                 router.push(`${paths.quiz_management.detail}/${id}`);
@@ -203,7 +206,7 @@ export default function ViewQuiz({ id }: { id: string }) {
             }}
           >
             Start Quiz Now
-          </Button>
+          </GradientButton>
         </div>
       </div>
     </div>

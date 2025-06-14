@@ -100,8 +100,6 @@ const AddQuizQuestions: React.FC<AddQuizQuestionsProps> = ({
             Cancel
           </button>
           <GradientButton
-            fromGradient="from-[#0E76BC]"
-            toGradient="to-[#283891]"
             className="w-[200px]"
             type="submit"
             loading={loadingBool.bool}

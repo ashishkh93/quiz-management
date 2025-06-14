@@ -14,7 +14,7 @@ import { useBoolean } from "@/hooks/useBoolean";
 
 const ScheduleQuizForm: React.FC<CommonQuizProps> = ({ quizId }) => {
   const router = useRouter();
-  const loading = useBoolean()
+  const loading = useBoolean();
 
   const {
     control,
@@ -35,7 +35,7 @@ const ScheduleQuizForm: React.FC<CommonQuizProps> = ({ quizId }) => {
   });
 
   const onSubmit = async (data: QuizScheduleFormValues) => {
-    loading.onTrue()
+    loading.onTrue();
     const payload = {
       quizId,
       announcement: data?.announcements,
@@ -48,7 +48,7 @@ const ScheduleQuizForm: React.FC<CommonQuizProps> = ({ quizId }) => {
       router.push(paths.quiz_management.root);
       reset();
     }
-    loading.onFalse()
+    loading.onFalse();
   };
 
   return (
@@ -138,8 +138,6 @@ const ScheduleQuizForm: React.FC<CommonQuizProps> = ({ quizId }) => {
                 Skip
               </button>
               <GradientButton
-                fromGradient="from-[#0E76BC]"
-                toGradient="to-[#283891]"
                 className="w-[200px]"
                 type="submit"
                 loading={loading.bool}

@@ -15,6 +15,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useState } from "react";
+import GradientButton from "../molecules/gradient-button/gradient-button";
+import { useBoolean } from "@/hooks/useBoolean";
 
 interface UrlModalProps {
   open: boolean;
@@ -31,6 +33,7 @@ type UrlFormData = z.infer<typeof urlSchema>;
 
 export default function UrlModal({ open, onOpenChange, id }: UrlModalProps) {
   const router = useRouter();
+  const loadingBool = useBoolean();
 
   const {
     register,
@@ -42,8 +45,9 @@ export default function UrlModal({ open, onOpenChange, id }: UrlModalProps) {
 
   const onSubmit = async (data: UrlFormData) => {
     try {
+      loadingBool.onTrue();
       const response = await addUrl(id, { videoUrl: data.url }); // Pass url to backend
-      console.log("Add url:", response);
+
       if (response.status) {
         onOpenChange(false);
         toast.success(response.data?.message ?? "URL added successfully!");
@@ -52,8 +56,9 @@ export default function UrlModal({ open, onOpenChange, id }: UrlModalProps) {
         toast.error(response?.message ?? "Something went wrong");
       }
     } catch (error) {
-      console.error("Failed to add URL:", error);
       toast.error("Something went wrong");
+    } finally {
+      loadingBool.onFalse();
     }
   };
 
@@ -87,18 +92,19 @@ export default function UrlModal({ open, onOpenChange, id }: UrlModalProps) {
           <div className="w-full flex justify-center gap-4 pt-4">
             <Button
               variant="outline"
-              className="w-1/2"
+              className="w-1/2 cursor-pointer border-[#0E76BC]"
               onClick={() => onOpenChange(false)}
               type="button"
             >
               Cancel
             </Button>
-            <Button
-              className="w-1/2 bg-blue-600 hover:bg-blue-700"
+            <GradientButton
               type="submit"
+              className="w-1/2 cursor-pointer"
+              loading={loadingBool.bool}
             >
               Save
-            </Button>
+            </GradientButton>
           </div>
         </form>
       </DialogContent>

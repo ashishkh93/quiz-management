@@ -123,8 +123,7 @@ const QuizForm: React.FC<{
 
       <div className="mt-8">
         <GradientButton
-          fromGradient="from-[#0E76BC]"
-          toGradient="to-[#283891] w-36"
+          className="w-36"
           type="submit"
           disabled={isSubmitting}
           loading={isSubmitting}
