@@ -9,7 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { LayoutDashboard, Menu, LogOut, User } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 import { Inter } from "next/font/google";
 import { paths } from "@/routes/path";
@@ -31,6 +31,8 @@ const QuizLayout = ({ children }: IChildren) => {
   const user = {
     name: "Ashish",
   };
+
+  const router = useRouter();
 
   const [open, setOpen] = useState(false);
 
@@ -64,7 +66,8 @@ const QuizLayout = ({ children }: IChildren) => {
                       width={150}
                       height={150}
                       color="black"
-                      className="rounded-md"
+                      className="rounded-md cursor-pointer"
+                      onClick={() => router.push(paths.quiz_management.root)}
                     />
                   </div>
                   <nav className="space-y-2">
@@ -92,7 +95,8 @@ const QuizLayout = ({ children }: IChildren) => {
                   width={120}
                   height={120}
                   color="black"
-                  className="rounded-md"
+                  className="rounded-md cursor-pointer"
+                  onClick={() => router.push(paths.quiz_management.root)}
                 />
               </div>
             </div>
