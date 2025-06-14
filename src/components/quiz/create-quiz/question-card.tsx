@@ -116,10 +116,10 @@ export function QuestionCard({ index, form, onRemove }: QuestionCardProps) {
                 </div>
               ) : (
                 <div
-                  className="p-4 border rounded-md bg-gray-100 hover:bg-gray-200 cursor-pointer"
+                  className="p-2 border rounded-md bg-gray-100 hover:bg-gray-200 cursor-pointer"
                   onClick={handleAddOption}
                 >
-                  <Plus className="w-4 h-4 text-black !cursor-pointer" />
+                  <Plus className="w-3 h-3 text-black !cursor-pointer" />
                 </div>
               )}
             </div>
