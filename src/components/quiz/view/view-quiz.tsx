@@ -9,6 +9,8 @@ import UrlModal from "../url-modal";
 import { paths } from "@/routes/path";
 import { useRouter } from "next/navigation";
 import GradientButton from "@/components/molecules/gradient-button/gradient-button";
+import { useBoolean } from "@/hooks/useBoolean";
+import QuizSkeleton from "@/components/shared/skeleton/quiz-skeleton";
 
 export default function ViewQuiz({ id }: { id: string }) {
   const participants = [
@@ -22,16 +24,22 @@ export default function ViewQuiz({ id }: { id: string }) {
   const [quizData, setQuizData] = useState<any>({});
   const [urlModalOpen, setUrlModalOpen] = useState(false);
 
+  const loadingBool = useBoolean();
+
   useEffect(() => {
     onload();
   }, [id]);
 
   const onload = async () => {
+    loadingBool.onTrue();
     const quizRes = (await getQuizDetail(id)) as any;
     setQuizData(quizRes.data.data);
+    loadingBool.onFalse();
   };
 
-  return (
+  return loadingBool.bool ? (
+    <QuizSkeleton />
+  ) : (
     <div className="min-h-full bg-gray-50 p-6">
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
