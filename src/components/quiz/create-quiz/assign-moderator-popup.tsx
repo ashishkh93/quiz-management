@@ -83,7 +83,7 @@ export default function AssignModeratorPopup({
         ) : (
           <div className="mb-4">
             <div className="flex items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground cursor-pointer">
-              <span>
+              <span className="text-[13px]">
                 {assignedModeratorId ? moderatorVal : "Assign Moderator"}
               </span>
               <svg

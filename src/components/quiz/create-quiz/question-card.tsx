@@ -107,19 +107,19 @@ export function QuestionCard({ index, form, onRemove }: QuestionCardProps) {
                   className="h-8 !border-0 !pl-0 !shadow-none bg-white"
                 />
               </div>
-              {optionIndex === options.length - 1 ? (
+              {options.length === 4 || optionIndex !== options.length - 1 ? (
+                <div
+                  className="p-2 border rounded-md bg-gray-100 hover:bg-gray-200 cursor-pointer"
+                  onClick={() => handleRemoveOption(optionIndex)}
+                >
+                  <Trash2 className="w-3 h-3 text-black !cursor-pointer" />
+                </div>
+              ) : (
                 <div
                   className="p-4 border rounded-md bg-gray-100 hover:bg-gray-200 cursor-pointer"
                   onClick={handleAddOption}
                 >
                   <Plus className="w-4 h-4 text-black !cursor-pointer" />
-                </div>
-              ) : (
-                <div
-                  className="p-4 border rounded-md bg-gray-100 hover:bg-gray-200 cursor-pointer"
-                  onClick={() => handleRemoveOption(optionIndex)}
-                >
-                  <Trash2 className="w-4 h-4 text-black !cursor-pointer" />
                 </div>
               )}
             </div>

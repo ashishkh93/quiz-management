@@ -17,7 +17,7 @@ const TextareaField: React.FC<TextareaFieldProps> = ({
   return (
     <div className="flex flex-col items-start gap-1 w-full">
       {label && (
-        <Label htmlFor={id} className="text-sm text-[#3b3a3a]">
+        <Label htmlFor={id} className="text-[13px] font-normal text-[#3b3a3a]">
           {label}
         </Label>
       )}
