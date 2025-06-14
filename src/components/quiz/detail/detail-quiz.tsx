@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import { paths } from "@/routes/path";
 import WinnerPopup from "../create-quiz/winner-popup";
 import GradientTitle from "@/components/shared/gradient/gradient-title";
+import GradientButton from "@/components/molecules/gradient-button/gradient-button";
 
 export default function QuizDetail({ id }: { id: string }) {
   const socket = getSocket();
@@ -88,20 +89,22 @@ export default function QuizDetail({ id }: { id: string }) {
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-lg font-bold text-gray-900">Quiz Details</h1>
           <div className="flex gap-3">
-            <Button
-              className="bg-green-600 hover:bg-green-700 text-white px-6 cursor-pointer"
+            <GradientButton
+              fromGradient="from-[#71D561]"
+              toGradient="to-[#00A32E]"
+              className="text-white px-6 cursor-pointer"
               onClick={() =>
                 router.push(paths.quiz_management.add_question(id))
               }
             >
               Add Question
-            </Button>
-            <Button
-              className="bg-blue-600 hover:bg-blue-700 text-white px-6"
+            </GradientButton>
+            <GradientButton
+              className="text-white px-6"
               onClick={() => setLockRoomModalOpen(true)}
             >
               Lock Room
-            </Button>
+            </GradientButton>
           </div>
         </div>
 
@@ -182,6 +185,7 @@ export default function QuizDetail({ id }: { id: string }) {
               lstQuestion.map((question: any, index: number) => {
                 return (
                   <QuestionCard
+                    key={index}
                     question={question}
                     selectedAnswers={selectedAnswers}
                     onAnswerSelect={handleAnswerSelect}
@@ -225,31 +229,29 @@ export default function QuizDetail({ id }: { id: string }) {
                 {/* </CardHeader> */}
                 <div className="text-sm text-gray-600 space-y-4 max-h-[calc(100vh-200px)] overflow-y-auto">
                   <div className="flex items-center gap-2">
-                    <div className="relative bg-[linear-gradient(to_left,_rgba(60,155,54,0)_0%,_rgba(60,155,54,1)_400%)] px-6 flex items-center h-full">
-                      <img
-                        src={"/images/QuizOverviewStrip.svg"}
-                        alt={"QuizOverviewStrip"}
-                        className="h-5 absolute left-0 top-1"
-                      />
-                      <h1 className="text-[18px] font-medium text-black">
-                        {"Announcement"}
-                      </h1>
-                    </div>
+                    <GradientTitle title="Announcement" parentClass="!mt-0" />
                   </div>
                   <div className="px-3 py-1">
                     {quizData?.AnnouncementQuiz?.length > 0
-                      ? quizData?.AnnouncementQuiz.map((obj: any) => {
-                          return (
-                            <div className="bg-[#f5f5f5] p-3 mb-3 rounded-lg">
-                              <p>
-                                <strong className="text-gray-900 text-sm">
-                                  {obj?.title}
-                                </strong>
-                              </p>
-                              <p className="text-xs mt-1">{obj?.description}</p>
-                            </div>
-                          );
-                        })
+                      ? quizData?.AnnouncementQuiz.map(
+                          (obj: any, idx: number) => {
+                            return (
+                              <div
+                                key={idx}
+                                className="bg-[#f5f5f5] p-3 mb-3 rounded-lg"
+                              >
+                                <p>
+                                  <strong className="text-gray-900 text-sm">
+                                    {obj?.title}
+                                  </strong>
+                                </p>
+                                <p className="text-xs mt-1">
+                                  {obj?.description}
+                                </p>
+                              </div>
+                            );
+                          }
+                        )
                       : "Not found"}
                   </div>
                 </div>

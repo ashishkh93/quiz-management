@@ -39,8 +39,8 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
 
         {/* Answer Options */}
         <div className="grid grid-cols-4 gap-3 mb-6">
-          {question.options.map((option: string) => (
-            <h3 className="px-3 py-2 text-sm text-gray-900 pr-4 border border-gray-200 rounded-full">
+          {question.options.map((option: string, index:number) => (
+            <h3 key={`option${index}`} className="px-3 py-2 text-sm text-gray-900 pr-4 border border-gray-200 rounded-full">
               {option}
             </h3>
           ))}

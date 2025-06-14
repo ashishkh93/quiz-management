@@ -2,11 +2,12 @@ import React from "react";
 
 type TGradientTitleProps = {
   title: string;
+  parentClass?: string;
 };
 
-const GradientTitle: React.FC<TGradientTitleProps> = ({ title = "" }) => {
+const GradientTitle: React.FC<TGradientTitleProps> = ({ title = "", parentClass }) => {
   return (
-    <div className="inline-flex items-center h-[38px] rounded-tr-[16px] rounded-br-[16px] overflow-hidden mt-6">
+    <div className={`inline-flex items-center h-[38px] rounded-tr-[16px] rounded-br-[16px] overflow-hidden mt-6 ${parentClass}`}>
       {/* Left vertical black bar */}
       <div className="w-[3px] h-full bg-black" />
 
