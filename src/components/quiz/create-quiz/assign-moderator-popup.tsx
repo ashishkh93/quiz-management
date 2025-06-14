@@ -13,6 +13,7 @@ import { Search } from "lucide-react";
 import { getModeratorList } from "@/api-service/moderator.service";
 import { ModeratorForm } from "./create-moderator";
 import { UseFormSetValue } from "react-hook-form";
+import GradientButton from "@/components/molecules/gradient-button/gradient-button";
 
 interface AssignModeratorPopupProps {
   setValue?: UseFormSetValue<QuizFormValues>;
@@ -131,7 +132,7 @@ export default function AssignModeratorPopup({
                     placeholder="Search"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-10"
+                    className="pl-10 h-[42px]"
                     onKeyDown={(e) => {
                       if (e.key === "Enter" && searchTerm.trim() !== "") {
                         handleSearch();
@@ -139,18 +140,20 @@ export default function AssignModeratorPopup({
                     }}
                   />
                 </div>
-                <Button
+                <GradientButton
+                  fromGradient="from-[#71D561]"
+                  toGradient="to-[#00A32E]"
                   onClick={handleSearch}
-                  className="bg-green-600 hover:bg-green-700 text-white px-6"
+                  className="text-white px-6"
                 >
                   Search
-                </Button>
-                <Button
+                </GradientButton>
+                <GradientButton
                   onClick={handleCreateNew}
                   className="bg-blue-600 hover:bg-blue-700 text-white px-4"
                 >
                   Create New
-                </Button>
+                </GradientButton>
               </div>
 
               <div className="max-h-80 overflow-y-auto">

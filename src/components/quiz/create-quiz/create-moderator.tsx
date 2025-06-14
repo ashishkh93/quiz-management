@@ -10,6 +10,7 @@ import {
   moderatorSchema,
 } from "@/utils/schema/moderator.schema";
 import { createNewModerator } from "@/api-service/moderator.service";
+import GradientButton from "@/components/molecules/gradient-button/gradient-button";
 
 interface ModeratorFormProps {
   onCancel: () => void;
@@ -43,7 +44,7 @@ export const ModeratorForm: React.FC<ModeratorFormProps> = ({
   };
 
   return (
-    <div className="px-6 py-6 space-y-6">
+    <div className="px-6 py-4 space-y-6">
       <div>
         <label
           htmlFor="name"
@@ -106,14 +107,14 @@ export const ModeratorForm: React.FC<ModeratorFormProps> = ({
         >
           Cancel
         </Button>
-        <Button
+        <GradientButton
           type="submit"
-          className="bg-blue-600 hover:bg-blue-700 text-white px-8 cursor-pointer"
+          className="text-white px-8 cursor-pointer"
           disabled={isLoading}
           onClick={() => handleSubmit(onSubmit)()}
         >
           {isLoading ? "Saving..." : "Save"}
-        </Button>
+        </GradientButton>
       </div>
     </div>
   );
