@@ -132,6 +132,11 @@ export default function AssignModeratorPopup({
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="pl-10"
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && searchTerm.trim() !== "") {
+                        handleSearch();
+                      }
+                    }}
                   />
                 </div>
                 <Button

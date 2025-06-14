@@ -86,10 +86,10 @@ const AddQuizQuestions: React.FC<AddQuizQuestionsProps> = ({
     // @ts-ignore
     <form onSubmit={form.handleSubmit(onSubmit)}>
       <div className="font-bold text-xl text-gray-700 mb-6">Add Questions</div>
-      <Card className="p-6">
+      {/* <Card className="p-6"> */}
         {/* @ts-ignore */}
         <QuestionsSection form={form} hideTitle />
-      </Card>
+      {/* </Card> */}
       <div className="mt-6">
         <div className="flex justify-start space-x-4">
           <button

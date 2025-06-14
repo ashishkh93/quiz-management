@@ -55,7 +55,7 @@ export function QuestionsSection({ form, hideTitle }: QuestionsSectionProps) {
       <button
         type="button"
         onClick={addQuestion}
-        className="w-full mt-2 py-3 border-2 border-dashed border-gray-300 rounded-md flex items-center justify-center gap-2 text-gray-600 transition-colors cursor-pointer hover:bg-gray-100"
+        className="w-full mt-2 py-3 border-[1px] border-dashed border-gray-300 rounded-md flex items-center justify-center gap-2 text-gray-600 transition-colors cursor-pointer hover:bg-gray-100"
       >
         <Plus className="h-4 w-4" />
         <span>Add Question</span>
