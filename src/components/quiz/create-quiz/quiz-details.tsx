@@ -71,7 +71,7 @@ export function QuizDetails({ form }: QuizDetailsProps) {
                 type="time"
                 {...register("time")}
                 className={cn(
-                  "w-full pl-10 pr-3 py-2 border border-gray-200 rounded-md focus:ring-1 focus:ring-primary focus:border-primary text-[13px]",
+                  "w-full pl-10 pr-3 py-2 border border-gray-200 rounded-md focus:ring-1 focus:ring-primary focus:border-primary text-[13px] h-10",
                   errors.time && "border-destructive focus:ring-destructive"
                 )}
               />
