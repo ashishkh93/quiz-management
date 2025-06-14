@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import GradientButton from "@/components/molecules/gradient-button/gradient-button";
 import { useBoolean } from "@/hooks/useBoolean";
 import QuizSkeleton from "@/components/shared/skeleton/quiz-skeleton";
+import Link from "next/link";
 
 export default function ViewQuiz({ id }: { id: string }) {
   const participants = [
@@ -202,19 +203,19 @@ export default function ViewQuiz({ id }: { id: string }) {
 
         {/* Start Quiz Button */}
         <div className="mt-6">
-          <GradientButton
-            type="button"
-            className="text-white px-6 py-2"
-            onClick={() => {
-              if (quizData.videoUrl) {
-                router.push(`${paths.quiz_management.detail}/${id}`);
-              } else {
+          <Link
+            href={`${paths.quiz_management.detail}/${id}`}
+            onClick={(e) => {
+              if (!quizData.videoUrl) {
                 setUrlModalOpen(true);
               }
+              // let Link proceed normally
             }}
           >
-            Start Quiz Now
-          </GradientButton>
+            <GradientButton type="button" className="text-white px-6 py-2">
+              Start Quiz Now
+            </GradientButton>
+          </Link>
         </div>
       </div>
     </div>

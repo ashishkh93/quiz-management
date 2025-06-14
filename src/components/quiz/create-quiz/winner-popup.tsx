@@ -25,7 +25,6 @@ export default function WinnerPopup({
   useEffect(() => {
     if (winnerList?.length) setIsOpen(true);
   }, [winnerList]);
-  console.log("winnerList: ", winnerList);
 
   return (
     <div>

@@ -12,6 +12,7 @@ import { paths } from "@/routes/path";
 import WinnerPopup from "../create-quiz/winner-popup";
 import GradientTitle from "@/components/shared/gradient/gradient-title";
 import GradientButton from "@/components/molecules/gradient-button/gradient-button";
+import Link from "next/link";
 
 export default function QuizDetail({ id }: { id: string }) {
   const socket = getSocket();
@@ -89,16 +90,18 @@ export default function QuizDetail({ id }: { id: string }) {
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-lg font-bold text-gray-900">Quiz Details</h1>
           <div className="flex gap-3">
-            <GradientButton
-              fromGradient="from-[#71D561]"
-              toGradient="to-[#00A32E]"
-              className="text-white px-6 cursor-pointer"
-              onClick={() =>
-                router.push(paths.quiz_management.add_question(id))
-              }
-            >
-              Add Question
-            </GradientButton>
+            <Link href={paths.quiz_management.add_question(id)}>
+              <GradientButton
+                fromGradient="from-[#71D561]"
+                toGradient="to-[#00A32E]"
+                className="text-white px-6 cursor-pointer"
+                onClick={() =>
+                  router.push(paths.quiz_management.add_question(id))
+                }
+              >
+                Add Question
+              </GradientButton>
+            </Link>
             <GradientButton
               className="text-white px-6"
               onClick={() => setLockRoomModalOpen(true)}

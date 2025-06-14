@@ -1,3 +1,5 @@
+"use client";
+
 import { AuthGuard } from "@/auth/context/guard/auth-guard";
 import QuizLayout from "@/components/layout/quiz-layout";
 import { SplashScreen } from "@/components/loading-screen";

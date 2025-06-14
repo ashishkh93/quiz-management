@@ -24,6 +24,7 @@ import DashboardSkeleton from "../shared/skeleton/dashboard-skeleton";
 import NoDataFound from "../shared/not-found/no-data-found";
 import InputField from "../shared/input/InputField";
 import { X } from "lucide-react";
+import Link from "next/link";
 
 const QuizComponent = () => {
   const router = useRouter();
@@ -88,11 +89,9 @@ const QuizComponent = () => {
               View Moderator
             </GradientButton>
           </AssignModeratorPopup>
-          <GradientButton
-            onClick={() => router.push(paths.quiz_management.create)}
-          >
-            Create Quiz
-          </GradientButton>
+          <Link color="inherit" href={paths.quiz_management.create}>
+            <GradientButton>Create Quiz</GradientButton>
+          </Link>
         </div>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6 mb-10">
