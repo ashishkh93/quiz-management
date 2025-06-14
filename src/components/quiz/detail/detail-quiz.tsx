@@ -261,12 +261,12 @@ export default function QuizDetail({ id }: { id: string }) {
         </div>
 
         <WinnerPopup winnerList={winnerList}>
-          <Button
-            className="bg-blue-600 hover:bg-blue-700 text-white px-6 mt-5"
+          <GradientButton
+            className="text-white px-6 mt-5"
             onClick={() => onCompleteQuiz()}
           >
             Complete quiz
-          </Button>
+          </GradientButton>
         </WinnerPopup>
       </div>
       <LockRoomModal
