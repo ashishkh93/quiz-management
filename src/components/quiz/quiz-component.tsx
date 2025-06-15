@@ -23,8 +23,9 @@ import { useBoolean } from "@/hooks/useBoolean";
 import DashboardSkeleton from "../shared/skeleton/dashboard-skeleton";
 import NoDataFound from "../shared/not-found/no-data-found";
 import InputField from "../shared/input/InputField";
-import { X } from "lucide-react";
+import { Search, X } from "lucide-react";
 import Link from "next/link";
+import QuizDetailHistoryCard from "./quiz-detail-history-card";
 
 const QuizComponent = () => {
   const router = useRouter();
@@ -56,31 +57,31 @@ const QuizComponent = () => {
     return () => handler.cancel();
   }, [searchTerm]);
 
-  return loadingBool.bool ? (
-    <DashboardSkeleton />
-  ) : (
-    <div className="flex flex-col flex-[0_0_auto] space-y-4 my-4">
+  return (
+    <div className="flex flex-col flex-[0_0_auto] space-y-4 my-2 mx-3">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-2 md:gap-0">
-        <Typography size="lg" className="text-start">
+        <Typography size="lg" className="text-start font-bold">
           Upcoming Quiz
         </Typography>
         <div className="flex justify-around items-start sm:items-center gap-2 flex-col sm:flex-row">
-          <InputField
-            placeholder="Search"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-5"
-            rightIcon={
-              searchTerm ? (
-                <X
-                  className="w-4 h-4 text-gray-400"
-                  onClick={() => setSearchTerm("")}
-                />
-              ) : (
-                <></>
-              )
-            }
-          />
+          <div className="relative w-full sm:w-[400px] bg-white">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <InputField
+              placeholder="Search"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-9 pr-9 w-full" // ensure InputField fills parent width
+              rightIcon={
+                searchTerm ? (
+                  <X
+                    className="w-4 h-4 text-gray-400 cursor-pointer"
+                    onClick={() => setSearchTerm("")}
+                  />
+                ) : null
+              }
+            />
+          </div>
+
           <AssignModeratorPopup>
             <GradientButton
               fromGradient="from-[#71D561]"
@@ -89,38 +90,45 @@ const QuizComponent = () => {
               View Moderator
             </GradientButton>
           </AssignModeratorPopup>
+
           <Link color="inherit" href={paths.quiz_management.create}>
             <GradientButton>Create Quiz</GradientButton>
           </Link>
         </div>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6 mb-10">
-        {quizListData?.length > 0 ? (
-          quizListData.map((data: any, index: number) => (
-            <Fragment key={index}>
-              <QuizDetailCard data={data} />
-            </Fragment>
-          ))
-        ) : (
-          <NoDataFound description="No Upcoming quiz available." />
-        )}
-      </div>
-      <div className="space-y-4">
-        <Typography size="lg" className="text-start">
-          Quiz History
-        </Typography>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
-          {quizHistoryData?.length > 0 ? (
-            quizHistoryData.map((data: any, index: number) => (
-              <Fragment key={index}>
-                <QuizDetailCard data={data} />
-              </Fragment>
-            ))
-          ) : (
-            <NoDataFound description="No quiz history available." />
-          )}
+      {loadingBool.bool ? (
+        <DashboardSkeleton />
+      ) : (
+        <div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-4 gap-6 mb-10">
+            {quizListData?.length > 0 ? (
+              quizListData.map((data: any, index: number) => (
+                <Fragment key={index}>
+                  <QuizDetailCard data={data} />
+                </Fragment>
+              ))
+            ) : (
+              <NoDataFound description="No Upcoming quiz available." />
+            )}
+          </div>
+          <div className="space-y-4">
+            <Typography size="lg" className="text-start">
+              Quiz History
+            </Typography>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+              {quizHistoryData?.length > 0 ? (
+                quizHistoryData.map((data: any, index: number) => (
+                  <Fragment key={index}>
+                    <QuizDetailHistoryCard data={data} />
+                  </Fragment>
+                ))
+              ) : (
+                <NoDataFound description="No quiz history available." />
+              )}
+            </div>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

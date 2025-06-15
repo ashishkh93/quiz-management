@@ -13,6 +13,7 @@ import WinnerPopup from "../create-quiz/winner-popup";
 import GradientTitle from "@/components/shared/gradient/gradient-title";
 import GradientButton from "@/components/molecules/gradient-button/gradient-button";
 import Link from "next/link";
+import TextHeader1 from "@/components/TextHeader1";
 
 export default function QuizDetail({ id }: { id: string }) {
   const socket = getSocket();
@@ -113,19 +114,7 @@ export default function QuizDetail({ id }: { id: string }) {
 
         {/* Quiz Overview - Full Width */}
         <Card className="bg-white shadow-sm mb-6 w-full">
-          <div className="flex justify-between items-center mx-2">
-            <div className="relative w-full bg-[#f1f6fa] rounded-[5px]">
-              <img
-                src={"/images/QuizOverviewStrip.svg"}
-                alt={"QuizOverviewStrip"}
-                className="h-5 absolute left-0 top-1.5"
-              />
-              {/* QuizOverviewStrip */}
-              <div className="text-md font-semibold text-gray-900 p-1 ml-3">
-                Quiz Overview
-              </div>
-            </div>
-          </div>
+          <TextHeader1 title="Quiz Overview" />
           {/* <CardHeader className="">
           </CardHeader> */}
           <CardContent>

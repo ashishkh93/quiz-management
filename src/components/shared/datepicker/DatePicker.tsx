@@ -30,7 +30,7 @@ const DatePicker: React.FC<CustomDatePickerProps> = ({
   error,
   value,
   setValue,
-  placeholder = "Select date",
+  placeholder = "Select",
 }) => {
   const [open, setOpen] = useState(false);
 
@@ -46,7 +46,7 @@ const DatePicker: React.FC<CustomDatePickerProps> = ({
   return (
     <div className="flex flex-col items-start gap-1 w-full">
       {label && (
-        <Label className="text-[13px] text-[#3b3a3a] !font-normal">
+        <Label className="text-[12px] text-[#3b3a3a] !font-normal">
           {label}
         </Label>
       )}
@@ -54,7 +54,7 @@ const DatePicker: React.FC<CustomDatePickerProps> = ({
         <PopoverTrigger asChild>
           <Button
             variant="outline"
-            className={`h-10 w-full justify-between text-left rounded-md !font-normal text-[13px] ${
+            className={`h-12 w-full justify-between text-left rounded-lg !font-normal text-[14px] text-[#a1a1a1] ${
               error ? "border-red-500" : "border-gray-200"
             } ${className}`}
           >

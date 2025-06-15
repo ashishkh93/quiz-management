@@ -12,6 +12,8 @@ import GradientButton from "@/components/molecules/gradient-button/gradient-butt
 import { useBoolean } from "@/hooks/useBoolean";
 import QuizSkeleton from "@/components/shared/skeleton/quiz-skeleton";
 import Link from "next/link";
+import Typography from "@/components/ui/typegraphy";
+import TextHeader1 from "@/components/TextHeader1";
 
 export default function ViewQuiz({ id }: { id: string }) {
   const participants = [
@@ -41,134 +43,67 @@ export default function ViewQuiz({ id }: { id: string }) {
   return loadingBool.bool ? (
     <QuizSkeleton />
   ) : (
-    <div className="min-h-full bg-gray-50 p-6">
-      <div className="max-w-6xl mx-auto">
+    <div className="min-h-full bg-gray-50">
+      <div className="flex flex-col  px-2 pt-2 pb-3 md:flex-row justify-between items-start md:items-center gap-2 md:gap-0">
+        <Typography size="lg" className="text-start font-bold">
+          Quiz Details
+        </Typography>
+        <div className="text-[13px] flex justify-around items-start sm:items-center gap-2 flex-col sm:flex-row">
+          <span className="font-bold">View Quiz /</span> Quiz Management
+        </div>
+      </div>
+      <div className="mx-auto p-2">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Quiz Overview Card */}
           <Card className="bg-white shadow-sm">
-            <CardHeader className="pb-4">
-              <CardTitle className="text-lg font-semibold text-gray-900">
-                Quiz Overview
-              </CardTitle>
-            </CardHeader>
+            <TextHeader1 title="Quiz Overview" />
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 gap-4">
-                <div className="flex justify-between items-center">
-                  <span className="text-sm font-medium text-gray-600">
-                    Quiz Title:
-                  </span>
-                  <span className="text-sm text-gray-900">
-                    {quizData?.title}
-                  </span>
-                </div>
-
-                <div className="flex justify-between items-start">
-                  <span className="text-sm font-medium text-gray-600">
-                    Description:
-                  </span>
-                  <span className="text-sm text-gray-900 text-right max-w-xs">
-                    {quizData?.description}
-                  </span>
-                </div>
-
-                <div className="flex justify-between items-center">
-                  <span className="text-sm font-medium text-gray-600">
-                    Status:
-                  </span>
-                  <span className="text-sm text-gray-900">
-                    {quizData?.status}
-                  </span>
-                </div>
-
-                <div className="flex justify-between items-center">
-                  <span className="text-sm font-medium text-gray-600">
-                    Created By:
-                  </span>
-                  <span className="text-sm text-gray-900">
-                    {quizData?.createdBy}
-                  </span>
-                </div>
-
-                <div className="flex justify-between items-center">
-                  <span className="text-sm font-medium text-gray-600">
-                    Scheduled Date:
-                  </span>
-                  <span className="text-sm text-gray-900">
-                    {quizData?.scheduledDate}
-                  </span>
-                </div>
-
-                <div className="flex justify-between items-center">
-                  <span className="text-sm font-medium text-gray-600">
-                    Time:
-                  </span>
-                  <span className="text-sm text-gray-900">
-                    {quizData?.time}
-                  </span>
-                </div>
-
-                <div className="flex justify-between items-center">
-                  <span className="text-sm font-medium text-gray-600">
-                    Total Questions:
-                  </span>
-                  <span className="text-sm text-gray-900">
-                    {quizData?.totalQuestions}
-                  </span>
-                </div>
+                <CardItem title="Quiz Title" description={quizData?.title} />
+                <CardItem
+                  title="Description"
+                  description={quizData?.description}
+                />
+                <CardItem title="Status" description={quizData?.status} />
+                <CardItem
+                  title="Scheduled Date"
+                  description={quizData?.scheduledDate}
+                />
+                <CardItem title="Time" description={quizData?.time} />
+                <CardItem
+                  title="Total Questions"
+                  description={quizData?.totalQuestions}
+                />
               </div>
             </CardContent>
           </Card>
 
           {/* Other Details Card */}
           <Card className="bg-white shadow-sm">
-            <CardHeader className="pb-4">
-              <CardTitle className="text-lg font-semibold text-gray-900">
-                Other Details
-              </CardTitle>
-            </CardHeader>
+            <TextHeader1 title="Other Details" />
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 gap-4">
-                <div className="flex justify-between items-center">
-                  <span className="text-sm font-medium text-gray-600">
-                    Prize Pool:
-                  </span>
-                  <span className="text-sm text-gray-900">
-                    {quizData?.quizPrice}
-                  </span>
-                </div>
-
-                <div className="flex justify-between items-center">
-                  <span className="text-sm font-medium text-gray-600">
-                    Que Countdown:
-                  </span>
-                  <span className="text-sm text-gray-900">
-                    {quizData?.questionCountdown}
-                  </span>
-                </div>
-
-                <div className="flex justify-between items-center">
-                  <span className="text-sm font-medium text-gray-600">
-                    Question Types:
-                  </span>
-                  <span className="text-sm text-gray-900">
-                    {quizData?.questionType}
-                  </span>
-                </div>
-
-                <div className="flex justify-between items-center">
-                  <span className="text-sm font-medium text-gray-600">
-                    Notified Players:
-                  </span>
-                  <span className="text-sm text-gray-900">
-                    {quizData?.notifiedPlayersCount}
-                  </span>
-                </div>
-
-                <div className="flex justify-between items-start">
-                  <span className="text-sm font-medium text-gray-600">
+                <CardItem
+                  title="Prize Pool"
+                  description={quizData?.quizPrice}
+                />
+                <CardItem
+                  title="Que Countdown"
+                  description={quizData?.questionCountdown}
+                />
+                <CardItem
+                  title="Question Types"
+                  description={quizData?.questionType}
+                />
+                <CardItem
+                  title="Notified Players"
+                  description={quizData?.notifiedPlayersCount}
+                />
+                <div className="flex items-start">
+                  <span className="w-[150px] text-sm font-semibold text-[#686868]">
                     Participants:
                   </span>
-                  <div className="flex flex-col items-end gap-2">
+                  <div className="flex items-end gap-2">
                     <div className="flex -space-x-2">
                       {participants.map((participant) => (
                         <Avatar
@@ -188,7 +123,7 @@ export default function ViewQuiz({ id }: { id: string }) {
                     <Button
                       variant="outline"
                       size="sm"
-                      className="text-xs h-7 px-3"
+                      className="text-xs h-7 px-3 border border-black rounded-lg"
                     >
                       View All Participants
                     </Button>
@@ -203,21 +138,38 @@ export default function ViewQuiz({ id }: { id: string }) {
 
         {/* Start Quiz Button */}
         <div className="mt-6">
-          <Link
-            href={`${paths.quiz_management.detail}/${id}`}
-            onClick={(e) => {
-              if (!quizData.videoUrl) {
-                setUrlModalOpen(true);
+          <GradientButton
+            type="button"
+            className="text-white px-6 py-2"
+            onClick={() => {
+              if (quizData.videoUrl) {
+                router.push(`${paths.quiz_management.detail}/${id}`);
+              } else {
               }
-              // let Link proceed normally
+              setUrlModalOpen(true);
             }}
           >
-            <GradientButton type="button" className="text-white px-6 py-2">
-              Start Quiz Now
-            </GradientButton>
-          </Link>
+            Start Quiz Now
+          </GradientButton>
         </div>
       </div>
     </div>
   );
 }
+
+const CardItem = ({
+  title,
+  description,
+}: {
+  title: string;
+  description: string;
+}) => {
+  return (
+    <div className="flex items-center">
+      <span className="w-[150px] text-sm font-semibold text-[#686868]">
+        {title}:
+      </span>
+      <span className="text-sm text-gray-900">{description}</span>
+    </div>
+  );
+};

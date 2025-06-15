@@ -55,13 +55,13 @@ const EditQuiz = ({ quizId }: EditQuizProps) => {
     <EditQuizSkeleton />
   ) : (
     <>
-      <button
+      {/* <button
         onClick={() => router.back()}
         className="flex items-center space-x-1 text-sm font-medium text-gray-600 hover:text-black transition my-3 bg-gray-200 px-4 py-2 rounded-md !w-fit cursor-pointer"
       >
         <ArrowLeft className="h-4 w-4" />
         <span>Back</span>
-      </button>
+      </button> */}
       <QuizForm
         defaultQuizFormValues={
           quizData

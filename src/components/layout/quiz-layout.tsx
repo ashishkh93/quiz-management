@@ -29,7 +29,7 @@ const navigation = [
 const QuizLayout = ({ children }: IChildren) => {
   const pathname = usePathname();
   const user = {
-    name: "Ashish",
+    name: "Admin",
   };
 
   const router = useRouter();

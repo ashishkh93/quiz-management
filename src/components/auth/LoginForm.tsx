@@ -64,9 +64,13 @@ const LoginForm = () => {
     >
       <div className="flex justify-start items-center w-full">
         <div className="flex flex-col items-start gap-6 w-full">
-          <div className="text-2xl">
-            Sign <span className="text-[#8ABB2A]">In</span>
+          <div className="text-2xl font-bold">
+            Sign{" "}
+            <span className="text-transparent bg-gradient-to-b from-[#8ABB2A] to-[#3C9B36] bg-clip-text">
+              In
+            </span>
           </div>
+
           {/* Email field */}
           <div className="w-full">
             <InputField
@@ -111,9 +115,9 @@ const LoginForm = () => {
 
           {/* Sign In button */}
           <GradientButton
-            fromGradient="from-[#71D561]"
-            toGradient="to-[#00A32E]"
-            className="w-full sm:w-[298px] md:w-[200px] h-[54px] text-lg font-bold shadow-10 rounded-xl"
+            fromGradient="from-[#82C63F]"
+            toGradient="to-[#39B54A]"
+            className="w-full sm:w-[298px] md:w-[200px] h-[45px] text-md font-bold rounded-[12px] bg-gradient-to-br from-[#82C63F] to-[#39B54A] shadow-[0px_2px_8px_0px_#0000003B]"
             loading={loadingBool.bool}
           >
             Sign In
