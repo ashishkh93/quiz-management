@@ -1,6 +1,6 @@
 "use client";
 
-import { getQuizDetail } from "@/api-service/quiz.service";
+import { getQuizDetail, notifyUser } from "@/api-service/quiz.service";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -14,6 +14,7 @@ import QuizSkeleton from "@/components/shared/skeleton/quiz-skeleton";
 import Link from "next/link";
 import Typography from "@/components/ui/typegraphy";
 import TextHeader1 from "@/components/TextHeader1";
+import { toast } from "sonner";
 
 export default function ViewQuiz({ id }: { id: string }) {
   const participants = [
@@ -38,6 +39,19 @@ export default function ViewQuiz({ id }: { id: string }) {
     const quizRes = (await getQuizDetail(id)) as any;
     setQuizData(quizRes.data.data);
     loadingBool.onFalse();
+  };
+
+  const onNotify = async () => {
+    const notifyRes = (await notifyUser({
+      quizId: id,
+    })) as IDefaultResponse;
+    if (!notifyRes.status) {
+      toast.error(notifyRes?.message ?? "Something went wrong!");
+    } else {
+      toast.success(
+        notifyRes?.message ?? "User notification send successfully!"
+      );
+    }
   };
 
   return loadingBool.bool ? (
@@ -151,6 +165,16 @@ export default function ViewQuiz({ id }: { id: string }) {
           >
             Start Quiz Now
           </GradientButton>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => {
+              onNotify();
+            }}
+            className="font-bold px-8 py-5 text-[#0E76BC] border-2 border-[#0E76BC] hover:text-[#0E76BC] ml-2"
+          >
+            Notify to users
+          </Button>
         </div>
       </div>
     </div>

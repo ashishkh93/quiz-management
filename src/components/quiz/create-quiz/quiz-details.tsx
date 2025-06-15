@@ -30,9 +30,13 @@ export function QuizDetails({ form }: QuizDetailsProps) {
       <div className="p-6 !h-[calc(100dvh-280px)] overflow-auto">
         <div className="mb-4">
           <ImageDropzone
-            value={`${process.env.NEXT_PUBLIC_SERVER_URL_IMAGE}${
+            value={
               form.watch()?.image
-            }`}
+                ? `${process.env.NEXT_PUBLIC_SERVER_URL_IMAGE}${
+                    form.watch()?.image
+                  }`
+                : ""
+            }
             onChange={(file: File | null) => setValue("image", file)}
           />
         </div>

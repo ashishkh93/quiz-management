@@ -12,6 +12,7 @@ interface QuestionCardProps {
   onAnswerSelect: (questionId: number, answer: string) => void;
   onShowQuestionClick: (questionId: string) => void;
   onShowAnswerClick: (questionId: string) => void;
+  onHide: (questionId: string) => void;
 }
 
 const QuestionCard: React.FC<QuestionCardProps> = ({
@@ -20,9 +21,9 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
   onAnswerSelect,
   onShowQuestionClick,
   onShowAnswerClick,
+  onHide,
 }) => {
   const [hovered, setHovered] = useState<string | null>(null);
-
   return (
     <Card
       key={question?._id}
@@ -35,12 +36,23 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
           <h3 className="text-sm font-semibold text-gray-900 flex-1 pr-4">
             {question.question}
           </h3>
+          {question.isShow && question.isShowAnswer && (
+            <Eye
+              className="h-5 w-5 text-gray-600 cursor-pointer"
+              onClick={() => {
+                onHide(question._id);
+              }}
+            />
+          )}
         </div>
 
         {/* Answer Options */}
         <div className="grid grid-cols-4 gap-3 mb-6">
-          {question.options.map((option: string, index:number) => (
-            <h3 key={`option${index}`} className="px-3 py-2 text-sm text-gray-900 pr-4 border border-gray-200 rounded-full">
+          {question.options.map((option: string, index: number) => (
+            <h3
+              key={`option${index}`}
+              className="px-3 py-2 text-sm text-gray-900 pr-4 border border-gray-200 rounded-full"
+            >
               {option}
             </h3>
           ))}

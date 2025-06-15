@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import LockRoomModal from "../lock-room-modal";
@@ -29,6 +29,7 @@ export default function QuizDetail({ id }: { id: string }) {
   const [winnerList, setWinnerList] = useState<any[]>([]);
   const [topUsers, setTopUsers] = useState<any[]>([]);
   const [lstQuestion, setLstQuestion] = useState<any[]>([]);
+  const [isShowCount, setIsShowCount] = useState(0);
 
   const router = useRouter();
 
@@ -83,6 +84,19 @@ export default function QuizDetail({ id }: { id: string }) {
       quizId: id,
     });
   };
+  const onHide = (questionId: string) => {
+    socket.emit("hide_question", {
+      quizId: id,
+      questionId: questionId,
+    });
+
+    console.log("onShowAnswerClick: ", id);
+  };
+
+  useEffect(() => {
+    const count = lstQuestion?.filter((q) => q.isShow).length;
+    setIsShowCount(count);
+  }, [lstQuestion]); // <- Run when lstQuestion changes
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -159,13 +173,6 @@ export default function QuizDetail({ id }: { id: string }) {
                 </div>
               </div>
             </div>
-            {/* <div className="flex justify-between items-center">
-
-                            <div className="text-right">
-                                <span className="text-gray-600 text-sm">Point: </span>
-                                <span className="font-semibold">18</span>
-                            </div>
-                        </div> */}
           </CardContent>
         </Card>
 
@@ -183,6 +190,7 @@ export default function QuizDetail({ id }: { id: string }) {
                     onAnswerSelect={handleAnswerSelect}
                     onShowQuestionClick={onShowQuestionClick}
                     onShowAnswerClick={onShowAnswerClick}
+                    onHide={onHide}
                   />
                 );
               })}
@@ -196,26 +204,101 @@ export default function QuizDetail({ id }: { id: string }) {
                 <div className="flex items-center gap-4 overflow-x-auto p-3">
                   {/* Question Number Indicators */}
                   <div className="flex gap-1">
-                    {Array.from(
-                      { length: lstQuestion?.length || 0 },
-                      (_, index) => {
-                        const num = index + 1;
-                        return (
+                    {(() => {
+                      const totalQuestions = lstQuestion?.length || 0;
+                      const announcements = quizData?.AnnouncementQuiz || [];
+                      const totalAnnouncements = announcements.length;
+
+                      const output = [];
+                      const chunkSize =
+                        totalAnnouncements === 0
+                          ? totalQuestions
+                          : totalQuestions >= totalAnnouncements
+                          ? Math.ceil(totalQuestions / totalAnnouncements)
+                          : 1;
+
+                      let annIndex = 0;
+
+                      for (let i = 0; i < totalQuestions; i++) {
+                        const num = i + 1;
+
+                        // Add question bubble
+                        output.push(
                           <div
-                            key={num}
+                            key={`q-${num}`}
                             className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-medium ${
-                              num === 5
+                              num === isShowCount
                                 ? "bg-green-500 text-white"
-                                : num < 5
-                                ? "bg-gray-300 text-gray-700"
                                 : "bg-gray-100 text-gray-400"
                             }`}
                           >
-                            {num}
+                            {num < isShowCount ? (
+                              <img
+                                src="/images/DoneQuestion.svg"
+                                alt="Question Done"
+                                className="w-full h-full rounded-full border-2 border-white"
+                              />
+                            ) : (
+                              num
+                            )}
                           </div>
                         );
+
+                        // Add announcement(s)
+                        const shouldInsertAnnouncement =
+                          totalAnnouncements > 0 &&
+                          ((totalQuestions >= totalAnnouncements &&
+                            (num % chunkSize === 0 ||
+                              num === totalQuestions)) ||
+                            totalQuestions < totalAnnouncements);
+
+                        if (shouldInsertAnnouncement) {
+                          const count =
+                            totalQuestions >= totalAnnouncements
+                              ? 1
+                              : Math.ceil(totalAnnouncements / totalQuestions);
+
+                          for (
+                            let j = 0;
+                            j < count && annIndex < totalAnnouncements;
+                            j++
+                          ) {
+                            output.push(
+                              <div
+                                key={`a-${annIndex}`}
+                                className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-medium bg-gray-100 text-gray-400"
+                              >
+                                <img
+                                  src="/images/Announcement.svg"
+                                  alt="Announcement"
+                                  className="w-full h-full rounded-full border-2 border-white"
+                                />
+                              </div>
+                            );
+                            annIndex++;
+                          }
+                        }
                       }
-                    )}
+
+                      // Add any remaining announcements
+                      while (annIndex < totalAnnouncements) {
+                        output.push(
+                          <div
+                            key={`a-${annIndex}`}
+                            className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-medium bg-gray-100 text-gray-400"
+                          >
+                            <img
+                              src="/images/Announcement.svg"
+                              alt="Announcement"
+                              className="w-full h-full rounded-full border-2 border-white"
+                            />
+                          </div>
+                        );
+                        annIndex++;
+                      }
+
+                      return output;
+                    })()}
                   </div>
                 </div>
                 {/* </CardHeader> */}
