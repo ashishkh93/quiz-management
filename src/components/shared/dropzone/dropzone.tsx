@@ -3,6 +3,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { Upload, X } from "lucide-react";
+import { toast } from "sonner";
 
 const ImageDropzone: React.FC<ImageDropzoneProps> = ({
   value,
@@ -22,10 +23,21 @@ const ImageDropzone: React.FC<ImageDropzoneProps> = ({
     }
   }, [value]);
 
+  const MAX_FILE_SIZE_MB = 4;
+
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
       const file = acceptedFiles[0];
+
       if (file) {
+        const fileSizeMB = file.size / (1024 * 1024);
+        if (fileSizeMB > MAX_FILE_SIZE_MB) {
+          toast.error(
+            `File is too large. Maximum size allowed is ${MAX_FILE_SIZE_MB} MB.`
+          );
+          return;
+        }
+
         onChange?.(file);
         setPreview(URL.createObjectURL(file));
       }
