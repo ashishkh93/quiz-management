@@ -13,12 +13,12 @@ const ImageDropzone: React.FC<ImageDropzoneProps> = ({
   const [preview, setPreview] = useState<string | null>(null);
 
   useEffect(() => {
-    if (value) {
-      if (value instanceof File) {
-        setPreview(URL.createObjectURL(value));
-      } else {
-        setPreview(value);
-      }
+    if (value instanceof File) {
+      setPreview(URL.createObjectURL(value));
+    } else if (typeof value === "string") {
+      setPreview(value);
+    } else {
+      setPreview(null);
     }
   }, [value]);
 
