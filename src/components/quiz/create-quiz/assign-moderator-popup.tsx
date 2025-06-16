@@ -169,7 +169,7 @@ export default function AssignModeratorPopup({
                 </GradientButton>
                 <GradientButton
                   onClick={handleCreateNew}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-4"
+                  className="text-white px-4"
                 >
                   Create New
                 </GradientButton>
