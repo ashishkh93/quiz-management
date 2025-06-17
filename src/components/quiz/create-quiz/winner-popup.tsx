@@ -14,7 +14,6 @@ export default function WinnerPopup({
   children,
   winnerList,
 }: WinnerPopupProps) {
-  console.log("winnerList: ", winnerList);
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
 

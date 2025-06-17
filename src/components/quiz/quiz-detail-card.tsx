@@ -10,7 +10,6 @@ import React from "react";
 const QuizDetailCard = ({ data }: any) => {
   const router = useRouter();
 
-  console.log("data: ", data);
   return (
     <div
       className="bg-white rounded-xl shadow-lg overflow-hidden transition duration-300 transform hover:scale-[1.01] cursor-pointer"

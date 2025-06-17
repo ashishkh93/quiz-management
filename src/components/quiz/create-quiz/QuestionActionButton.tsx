@@ -24,21 +24,11 @@ const QuestionActionButton: React.FC<QuestionActionButtonProps> = ({
   onShowAnswerClick,
   quizData,
 }) => {
-  console.log("question: ", question);
   const [diffSeconds, setDiffSeconds] = useState<number>(NaN);
   const [count, setCount] = useState<number>(NaN);
-  console.log("count: ", count);
 
   useEffect(() => {
     if (!showDate) return;
-    console.log(
-      "new Date().getTime() - new Date(showDate).getTime(): ",
-      new Date().getTime() - new Date(showDate).getTime()
-    );
-    console.log(
-      "new Date().getTime() - new Date(showDate).getTime(): 1000",
-      (new Date().getTime() - new Date(showDate).getTime()) / 1000
-    );
 
     const start = moment.utc(showDate).subtract(0, "seconds"); // from BE
 
@@ -56,7 +46,6 @@ const QuestionActionButton: React.FC<QuestionActionButtonProps> = ({
 
     return () => clearInterval(interval);
   }, [showDate]);
-  console.log("showDate: ", showDate);
 
   const isNaNTime = isNaN(count);
   const underTenSeconds = count >= 0 && count < quizData?.questionCountdown;

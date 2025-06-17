@@ -22,7 +22,7 @@ export default function QuizDetail({ id }: { id: string }) {
   }>({});
   const [lockRoomModalOpen, setLockRoomModalOpen] = useState(false);
   const [quizData, setQuizData] = useState<any>({});
-  console.log("quizData: ", quizData);
+
   const [totalQuestions, setTotalQuestions] = useState<number>(0);
   const [joinPlayers, setJoinPlayers] = useState<number>(0);
   const [activePlayers, setActivePlayers] = useState<number>(0);
