@@ -32,15 +32,15 @@ const QuestionActionButton: React.FC<QuestionActionButtonProps> = ({
 
     const start = moment.utc(showDate);
     const totalSeconds = quizData?.questionCountdown || 0;
-    
+
     // Initial countdown value
     const now = moment.utc();
-    const elapsed = now.diff(start, 'seconds');
+    const elapsed = now.diff(start, "seconds");
     const remaining = Math.max(0, totalSeconds - elapsed);
     setCount(remaining);
 
     const interval = setInterval(() => {
-      setCount(prevCount => {
+      setCount((prevCount) => {
         if (prevCount <= 0) {
           clearInterval(interval);
           return 0;
@@ -88,7 +88,7 @@ const QuestionActionButton: React.FC<QuestionActionButtonProps> = ({
           <span className="text-sm font-medium">{count}s</span>
         </div>
       )}
-      
+
       {count <= 0 && (
         <Button
           className="bg-yellow-600 hover:bg-yellow-700 text-white px-6"
